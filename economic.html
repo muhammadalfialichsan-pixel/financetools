@@ -2,714 +2,608 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dekaa — Economic Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Vellsz — Data Ekonomi Indonesia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#060e1c; --bg-deep:#03060d; --surface:#0d1b2f; --line:#1c3352; --line-soft:#122236;
-    --text:#e7eef7; --text-muted:#8fa3bf; --text-faint:#54687f;
-    --blue:#3f8cff; --blue-soft:#3f8cff1f; --blue-deep:#1d4ed8;
-    --pos:#22b8a3; --pos-soft:#22b8a322; --neg:#ef5b6a; --neg-soft:#ef5b6a22; --caution:#e0ab3f; --caution-soft:#e0ab3f22;
-    --radius:3px;
+    --bg: #0a0d12;
+    --bg-elevated: #111623;
+    --bg-card: #12161f;
+    --bg-card-hover: #161b26;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    --text-primary: #eef0f4;
+    --text-secondary: #97a0b0;
+    --text-tertiary: #5b6472;
+    --red: #e6564a;
+    --red-dim: rgba(230,86,74,0.14);
+    --green: #35b881;
+    --green-dim: rgba(53,184,129,0.14);
+    --amber: #dba63e;
+    --amber-dim: rgba(219,166,62,0.14);
+    --blue: #5b93e0;
+    --blue-dim: rgba(91,147,224,0.14);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+    --radius: 10px;
+    --maxw: 1180px;
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{background:var(--bg-deep);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;}
-  ::selection{background:var(--blue-soft);}
-  .num{font-family:'Fraunces',serif;}
-  a{color:var(--blue);text-decoration:none;}
-  a:hover{text-decoration:underline;}
 
-  .shell{display:flex;min-height:100vh;}
-  .sidebar{width:216px;flex:none;background:var(--bg);border-right:1px solid var(--line-soft);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
-  .brand{padding:22px 20px 16px;border-bottom:1px solid var(--line-soft);}
-  .brand-mark{font-family:'Fraunces',serif;font-weight:700;font-size:21px;letter-spacing:0.3px;}
-  .brand-mark span{color:var(--blue);}
-  .brand-sub{font-size:11px;color:var(--text-faint);margin-top:2px;letter-spacing:0.3px;}
-  nav{flex:1;overflow-y:auto;padding:10px 0;}
-  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;color:var(--text-muted);cursor:pointer;font-size:13px;border-left:2px solid transparent;white-space:nowrap;}
-  .nav-item:hover{color:var(--text);background:#ffffff06;}
-  .nav-item.active{color:var(--text);border-left-color:var(--blue);background:#ffffff08;}
-  .nav-emoji{width:16px;text-align:center;font-size:13px;}
-  .sidebar-foot{padding:14px 20px;border-top:1px solid var(--line-soft);font-size:10.5px;color:var(--text-faint);line-height:1.6;}
-  .sidebar-foot .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--pos);margin-right:6px;}
+  *{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust: 100%; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(700px 400px at 85% -5%, rgba(91,147,224,0.10), transparent 60%),
+      radial-gradient(600px 400px at 10% 0%, rgba(230,86,74,0.07), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .page{ position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 0 20px 60px; }
 
-  main{flex:1;min-width:0;padding:28px 36px 60px;max-width:1180px;}
-  .page{display:none;}
-  .page.active{display:block;animation:fade .25s ease;}
-  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+  a{ color: inherit; text-decoration: none; }
+  ::selection{ background: var(--blue-dim); }
 
-  .page-head{margin-bottom:22px;}
-  .page-eyebrow{font-size:11px;color:var(--text-faint);margin-bottom:4px;}
-  .page-title{font-family:'Fraunces',serif;font-size:26px;font-weight:600;margin:0;}
-  .page-note{color:var(--text-muted);font-size:13px;margin-top:6px;max-width:660px;}
+  .num{ font-family: var(--font-mono); font-feature-settings: "tnum" 1; letter-spacing: -0.01em; }
 
-  .grid{display:grid;gap:14px;}
-  .grid-2{grid-template-columns:1fr 1fr;}
-  .grid-3{grid-template-columns:repeat(3,1fr);}
-  .grid-4{grid-template-columns:repeat(4,1fr);}
-  @media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;}}
-  @media(max-width:560px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+  /* ---------- Topbar ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 16px; padding: 22px 0 18px; flex-wrap: wrap;
+  }
+  .brand{ display:flex; align-items:center; gap: 12px; }
+  .brand-mark{
+    width: 38px; height:38px; border-radius: 9px;
+    background: linear-gradient(145deg, var(--red), #b8362c);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display); font-weight:700; font-size: 18px; color:#fff;
+    flex-shrink:0;
+  }
+  .brand-text{ display:flex; flex-direction:column; line-height:1.15; }
+  .brand-name{ font-family: var(--font-display); font-weight:600; font-size: 18px; }
+  .brand-tag{ font-size: 12px; color: var(--text-tertiary); }
+  .asof{ text-align:right; font-size: 13px; color: var(--text-secondary); }
+  .asof-value{ display:block; color: var(--text-primary); font-family: var(--font-mono); font-size: 13px; margin-top: 2px; }
 
-  .panel{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--radius);padding:18px 20px;}
-  .panel-title{font-size:12px;color:var(--text-muted);margin:0 0 14px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;}
-  .panel-title .tag{font-size:10.5px;color:var(--text-faint);}
+  /* ---------- Hero ---------- */
+  .hero{
+    display:grid; grid-template-columns: 200px 1fr; gap: 32px;
+    align-items:center;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px 32px;
+    margin-bottom: 22px;
+  }
+  .gauge-wrap{ position: relative; width: 168px; height:168px; margin: 0 auto; }
+  .gauge-wrap svg{ width:100%; height:100%; transform: rotate(-90deg); }
+  .gauge-center{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center;
+  }
+  .gauge-score{ font-family: var(--font-display); font-size: 40px; font-weight:700; line-height:1; }
+  .gauge-score span{ font-size: 15px; color: var(--text-tertiary); font-weight:500; }
+  .gauge-caption{ font-size: 11px; color: var(--text-tertiary); margin-top:4px; }
 
-  .stat{background:var(--surface);border:1px solid var(--line-soft);border-left:3px solid var(--line);border-radius:var(--radius);padding:14px 16px;}
-  .stat.pos{border-left-color:var(--pos);} .stat.neg{border-left-color:var(--neg);} .stat.flat{border-left-color:var(--blue);} .stat.caution{border-left-color:var(--caution);}
-  .stat-label{font-size:11.5px;color:var(--text-muted);}
-  .stat-value{font-family:'Fraunces',serif;font-size:25px;font-weight:600;margin-top:6px;}
-  .stat-value small{font-size:12.5px;color:var(--text-muted);font-family:'IBM Plex Sans';font-weight:400;margin-left:3px;}
-  .stat-delta{font-size:11.5px;margin-top:6px;color:var(--text-muted);}
-  .stat-delta.pos{color:var(--pos);} .stat-delta.neg{color:var(--neg);}
-  .stat-src{font-size:10px;color:var(--text-faint);margin-top:4px;}
+  .regime-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: var(--font-mono); font-size: 12.5px; font-weight:600;
+    padding: 6px 12px; border-radius: 100px; margin-bottom: 14px;
+  }
+  .regime-badge.caution{ background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(219,166,62,0.3); }
+  .regime-badge .dot{ width:6px; height:6px; border-radius:50%; background: currentColor; }
 
-  .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12.5px;font-weight:500;}
-  .badge.pos{background:var(--pos-soft);color:var(--pos);} .badge.neg{background:var(--neg-soft);color:var(--neg);}
-  .badge.caution{background:var(--caution-soft);color:var(--caution);} .badge.blue{background:var(--blue-soft);color:var(--blue);}
-  .live-chip{font-size:10px;color:var(--pos);border:1px solid #22b8a355;padding:1px 7px;border-radius:20px;}
-  .ref-chip{font-size:10px;color:var(--text-faint);border:1px solid var(--line);padding:1px 7px;border-radius:20px;}
+  .hero-body h1{
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(20px, 2.6vw, 28px); line-height: 1.28;
+    margin: 0 0 12px; max-width: 62ch;
+  }
+  .hero-body p{ color: var(--text-secondary); font-size: 14.5px; max-width: 68ch; margin: 0 0 14px; }
+  .hero-tags{ display:flex; gap:8px; flex-wrap:wrap; }
+  .tag{
+    font-size: 11.5px; font-family: var(--font-mono); padding: 4px 9px;
+    border-radius: 6px; border: 1px solid var(--border-strong); color: var(--text-secondary);
+  }
+  .tag.r{ color: var(--red); border-color: rgba(230,86,74,0.3); }
+  .tag.g{ color: var(--green); border-color: rgba(53,184,129,0.3); }
+  .tag.a{ color: var(--amber); border-color: rgba(219,166,62,0.3); }
 
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  th{text-align:left;color:var(--text-faint);font-weight:500;font-size:11px;padding:8px 10px;border-bottom:1px solid var(--line);}
-  td{padding:9px 10px;border-bottom:1px solid var(--line-soft);color:var(--text);}
-  tr:last-child td{border-bottom:none;}
-  .num-cell{font-family:'Fraunces',serif;}
+  /* ---------- KPI strip ---------- */
+  .kpi-strip{
+    display:flex; gap: 12px; overflow-x: auto; padding: 4px 2px 18px;
+    scroll-snap-type: x proximate; -webkit-overflow-scrolling: touch;
+    margin-bottom: 6px;
+  }
+  .kpi-strip::-webkit-scrollbar{ height: 4px; }
+  .kpi-strip::-webkit-scrollbar-thumb{ background: var(--border-strong); border-radius: 4px; }
+  .kpi{
+    scroll-snap-align: start;
+    flex: 0 0 156px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--kc, var(--border-strong));
+    border-radius: var(--radius);
+    padding: 13px 14px;
+    display:block;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .kpi:hover{ background: var(--bg-card-hover); }
+  .kpi-label{ font-size: 11.5px; color: var(--text-tertiary); margin-bottom: 7px; }
+  .kpi-value{ font-size: 19px; font-weight:600; }
+  .kpi-delta{ font-size: 11.5px; margin-top: 6px; display:flex; align-items:center; gap:4px; }
+  .kpi-delta.r{ color: var(--red); } .kpi-delta.g{ color: var(--green); } .kpi-delta.a{ color: var(--amber); } .kpi-delta.n{ color: var(--text-tertiary); }
 
-  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-  .bar-row:last-child{margin-bottom:0;}
-  .bar-label{width:130px;font-size:12.5px;color:var(--text-muted);flex:none;}
-  .bar-track{flex:1;height:7px;background:var(--line-soft);border-radius:20px;overflow:hidden;}
-  .bar-fill{height:100%;border-radius:20px;background:var(--blue);}
-  .bar-val{width:56px;text-align:right;font-size:12.5px;color:var(--text-muted);flex:none;}
+  /* ---------- Section grid ---------- */
+  .grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .card{
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    border-left: 3px solid var(--kc, var(--border-strong));
+  }
+  .card.wide{ grid-column: 1 / -1; }
+  .card-head{ display:flex; align-items:baseline; justify-content:space-between; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .card-head h2{ font-family: var(--font-display); font-size: 17px; font-weight: 600; margin:0; }
+  .card-period{ font-size: 11.5px; color: var(--text-tertiary); font-family: var(--font-mono); }
+  .status-chip{ font-size: 11px; font-family: var(--font-mono); padding: 3px 9px; border-radius: 6px; font-weight:600; white-space:nowrap; }
+  .status-chip.r{ background: var(--red-dim); color: var(--red); } .status-chip.g{ background: var(--green-dim); color: var(--green); } .status-chip.a{ background: var(--amber-dim); color: var(--amber); } .status-chip.n{ background: var(--blue-dim); color: var(--blue); }
 
-  canvas{max-width:100%;}
-  select,input,textarea{background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:var(--radius);padding:9px 11px;font-family:inherit;font-size:13px;width:100%;}
-  textarea{resize:vertical;min-height:64px;}
-  label.field{display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:5px;}
-  .field-wrap{margin-bottom:14px;}
-  button.primary{background:var(--blue);color:#04101f;border:none;padding:10px 18px;border-radius:var(--radius);font-weight:600;font-size:13px;cursor:pointer;}
-  button.primary:hover{filter:brightness(1.1);}
+  .headline{ display:flex; align-items:flex-end; gap: 14px; margin: 14px 0 6px; flex-wrap:wrap; }
+  .headline-value{ font-size: 34px; font-weight:600; line-height:1; }
+  .headline-sub{ font-size: 12.5px; color: var(--text-secondary); padding-bottom: 4px; }
 
-  .quad{display:grid;grid-template-columns:1fr 1fr;gap:2px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
-  .quad-cell{padding:22px 18px;min-height:110px;position:relative;}
-  .quad-cell .qtitle{font-size:13px;font-weight:600;} .quad-cell .qsub{font-size:11.5px;color:var(--text-muted);margin-top:3px;}
-  .quad-cell.active::after{content:'●';position:absolute;top:14px;right:16px;color:var(--blue);font-size:11px;}
+  .metric-rows{ margin-top: 14px; display:grid; grid-template-columns: repeat(2,1fr); gap: 10px 16px; }
+  .metric-rows.single{ grid-template-columns: 1fr; }
+  .mrow{ display:flex; justify-content:space-between; align-items:baseline; padding: 8px 0; border-top: 1px solid var(--border); font-size: 13.5px; }
+  .mrow:nth-child(-n+2){ border-top: none; }
+  .mrow-label{ color: var(--text-secondary); }
+  .mrow-value{ font-weight: 600; }
+  .mrow-value.r{ color: var(--red); } .mrow-value.g{ color: var(--green); } .mrow-value.a{ color: var(--amber); }
 
-  .journal-entry{border:1px solid var(--line-soft);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;}
-  .journal-entry .je-date{font-size:11.5px;color:var(--text-faint);}
-  .journal-entry .je-title{font-family:'Fraunces',serif;font-size:16px;margin:4px 0 8px;}
-  .journal-entry .je-body{font-size:13px;color:var(--text-muted);white-space:pre-wrap;}
+  .note{ margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12.5px; color: var(--text-tertiary); line-height:1.6; }
+  .note b{ color: var(--text-secondary); font-weight: 600; }
 
-  .map-diagram{font-family:'Fraunces',serif;text-align:center;color:var(--text-muted);}
-  .flow-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0;}
-  .flow-node{border:1px solid var(--line);border-radius:var(--radius);padding:8px 16px;font-size:12.5px;color:var(--text);background:var(--bg);}
-  .flow-node.hi{border-color:var(--blue);color:var(--blue);}
-  .flow-arrow{color:var(--text-faint);align-self:center;font-size:14px;}
+  .chart-box{ margin: 12px 0 4px; }
+  .chart-box svg{ width: 100%; height: auto; display:block; }
 
-  .foot-note{font-size:11.5px;color:var(--text-faint);margin-top:16px;}
-  .src-line{font-size:11px;color:var(--text-faint);margin-top:10px;}
-  .src-list{font-size:12px;color:var(--text-muted);}
-  .src-list li{margin-bottom:6px;}
+  /* ---------- Global economy ---------- */
+  .global-grid{ margin-top:14px; display:grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  .global-item{ padding: 12px; background: var(--bg-elevated); border-radius: 8px; border: 1px solid var(--border); }
+  .global-item .gl-label{ font-size: 11px; color: var(--text-tertiary); margin-bottom: 6px; }
+  .global-item .gl-value{ font-size: 18px; font-weight: 600; }
+  .global-item .gl-sub{ font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
 
-  .tv-wrap{border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;background:var(--surface);}
+  /* ---------- Signal board ---------- */
+  .signal-board{
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 22px; margin-bottom: 14px;
+  }
+  .signal-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 16px; }
+  .signal-item{
+    display:flex; align-items:center; justify-content:space-between; gap: 10px;
+    padding: 13px 15px; border-radius: 8px; background: var(--bg-elevated); border: 1px solid var(--border);
+  }
+  .signal-name{ font-size: 13px; color: var(--text-secondary); }
+  .signal-status{ display:flex; align-items:center; gap:7px; font-family: var(--font-mono); font-size: 12.5px; font-weight:600; }
+  .signal-status .dot{ width:8px; height:8px; border-radius:50%; }
+  .signal-status.r .dot{ background: var(--red); } .signal-status.r{ color: var(--red); }
+  .signal-status.g .dot{ background: var(--green); } .signal-status.g{ color: var(--green); }
+  .signal-status.a .dot{ background: var(--amber); } .signal-status.a{ color: var(--amber); }
+  .signal-status.n .dot{ background: var(--blue); } .signal-status.n{ color: var(--blue); }
 
-  @media(max-width:760px){
-    .shell{flex-direction:column;}
-    .sidebar{width:100%;height:auto;position:relative;flex-direction:row;overflow-x:auto;}
-    .brand{border-bottom:none;border-right:1px solid var(--line-soft);flex:none;}
-    nav{display:flex;padding:0;}
-    .nav-item{border-left:none;border-bottom:2px solid transparent;padding:14px 14px;}
-    .nav-item.active{border-left:none;border-bottom-color:var(--blue);}
-    .sidebar-foot{display:none;}
-    main{padding:20px 16px 50px;}
+  /* ---------- Footer ---------- */
+  .footer{ font-size: 12.5px; color: var(--text-tertiary); line-height: 1.75; padding-top: 10px; }
+  .footer h3{ font-family: var(--font-body); font-size: 13px; color: var(--text-secondary); font-weight:600; margin: 18px 0 6px; }
+  .footer h3:first-child{ margin-top:0; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px){
+    .page{ padding: 0 14px 40px; }
+    .hero{ grid-template-columns: 1fr; padding: 24px 20px; text-align:center; }
+    .hero-body{ text-align:left; }
+    .hero-tags{ justify-content:flex-start; }
+    .grid{ grid-template-columns: 1fr; }
+    .global-grid{ grid-template-columns: repeat(2,1fr); }
+    .signal-grid{ grid-template-columns: 1fr; }
+    .metric-rows{ grid-template-columns: 1fr; }
+    .mrow:nth-child(-n+2){ border-top: 1px solid var(--border); }
+    .mrow:first-child{ border-top: none; }
+  }
+  @media (max-width: 480px){
+    .asof{ text-align:left; width:100%; }
+    .topbar{ flex-direction: column; align-items:flex-start; }
+    .headline-value{ font-size: 28px; }
+    .gauge-wrap{ width: 140px; height:140px; }
+    .gauge-score{ font-size: 32px; }
+    .card{ padding: 18px; }
+    .global-grid{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
   }
 </style>
 </head>
 <body>
-<div class="shell">
+<div class="page">
 
-  <div class="sidebar">
+  <header class="topbar">
     <div class="brand">
-      <div class="brand-mark">DEK<span>AA</span></div>
-      <div class="brand-sub">Economic Dashboard</div>
+      <div class="brand-mark">A</div>
+      <div class="brand-text">
+        <span class="brand-name">Vellsz</span>
+        <span class="brand-tag">Data Ekonomi Indonesia</span>
+      </div>
     </div>
-    <nav id="nav"></nav>
-    <div class="sidebar-foot"><span class="dot"></span>Data resmi BI / BPS / World Bank + live market feed</div>
-  </div>
+    <div class="asof">
+      Data per
+      <span class="asof-value">11 September 2026 · 09:30 WIB</span>
+    </div>
+  </header>
 
-  <main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="gauge-wrap" role="img" aria-label="Skor ekonomi 55 dari 100">
+      <svg viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#dba63e" stroke-width="10"
+                stroke-linecap="round" stroke-dasharray="172.8 141.4"/>
+      </svg>
+      <div class="gauge-center">
+        <div class="gauge-score">55<span>/100</span></div>
+        <div class="gauge-caption">Skor Ekonomi</div>
+      </div>
+    </div>
+    <div class="hero-body">
+      <span class="regime-badge caution"><span class="dot"></span>TRANSISI · TEKANAN EKSTERNAL MENINGKAT</span>
+      <h1>Mesin pertumbuhan masih menyala, tapi penyangga eksternal menipis cepat</h1>
+      <p>PDB tumbuh 5,29% dan pasar tenaga kerja membaik, tetapi rupiah melemah ke sekitar Rp17.590/US$, defisit transaksi berjalan melebar tajam ke 3,3% PDB — terdalam sejak 2004 — dan harga minyak dunia melonjak akibat eskalasi konflik AS–Iran. Kombinasi ini menahan skor komposit di zona waspada, bukan ekspansi bersih.</p>
+      <div class="hero-tags">
+        <span class="tag g">Pertumbuhan: Melambat tapi solid</span>
+        <span class="tag a">Inflasi: Naik, masih terkendali</span>
+        <span class="tag r">Rupiah: Melemah</span>
+        <span class="tag r">Transaksi Berjalan: Melebar tajam</span>
+        <span class="tag r">Risiko Global: Tinggi</span>
+      </div>
+    </div>
+  </section>
 
-    <!-- OVERVIEW -->
-    <section class="page" data-page="overview">
-      <div class="page-head">
-        <div class="page-eyebrow">September 2026 · Indonesia</div>
-        <h1 class="page-title">Economic Pulse</h1>
-        <p class="page-note">Kondisi makro Indonesia terkini, disusun dari rilis resmi Bank Indonesia, BPS, dan World Bank, dilengkapi harga pasar langsung.</p>
-      </div>
+  <!-- KPI STRIP -->
+  <nav class="kpi-strip" aria-label="Indikator utama">
+    <a class="kpi" style="--kc:var(--amber)" href="#inflasi">
+      <div class="kpi-label">Inflasi YoY</div>
+      <div class="kpi-value num">3,19%</div>
+      <div class="kpi-delta a">▲ dari 2,88% (Jul)</div>
+    </a>
+    <a class="kpi" style="--kc:var(--blue)" href="#moneter">
+      <div class="kpi-label">BI Rate</div>
+      <div class="kpi-value num">5,75%</div>
+      <div class="kpi-delta n">→ tetap 2 RDG</div>
+    </a>
+    <a class="kpi" style="--kc:var(--green)" href="#pertumbuhan">
+      <div class="kpi-label">PDB YoY (Q2-26)</div>
+      <div class="kpi-value num">5,29%</div>
+      <div class="kpi-delta a">▼ dari 5,61% (Q1)</div>
+    </a>
+    <a class="kpi" style="--kc:var(--red)" href="#kurs">
+      <div class="kpi-label">USD/IDR</div>
+      <div class="kpi-value num">17.590</div>
+      <div class="kpi-delta r">▲ rupiah melemah</div>
+    </a>
+    <a class="kpi" style="--kc:var(--red)" href="#pasar">
+      <div class="kpi-label">IHSG</div>
+      <div class="kpi-value num">6.589</div>
+      <div class="kpi-delta r">▼ 1,33%</div>
+    </a>
+    <a class="kpi" style="--kc:var(--green)" href="#uangkredit">
+      <div class="kpi-label">M2 (Uang Beredar)</div>
+      <div class="kpi-value num">+8,3%</div>
+      <div class="kpi-delta g">▲ YoY, Jul-26</div>
+    </a>
+    <a class="kpi" style="--kc:var(--green)" href="#tenagakerja">
+      <div class="kpi-label">TPT (Pengangguran)</div>
+      <div class="kpi-value num">4,68%</div>
+      <div class="kpi-delta g">▼ dari 4,76%</div>
+    </a>
+    <a class="kpi" style="--kc:var(--red)" href="#eksternal">
+      <div class="kpi-label">Neraca Dagang</div>
+      <div class="kpi-value num">+$0,12M</div>
+      <div class="kpi-delta r">▼ surplus menyempit</div>
+    </a>
+    <a class="kpi" style="--kc:var(--red)" href="#eksternal">
+      <div class="kpi-label">Current Account</div>
+      <div class="kpi-value num">-3,3%</div>
+      <div class="kpi-delta r">▼ dari -1,0% PDB</div>
+    </a>
+    <a class="kpi" style="--kc:var(--green)" href="#kurs">
+      <div class="kpi-label">Cadangan Devisa</div>
+      <div class="kpi-value num">$146,5M</div>
+      <div class="kpi-delta g">▲ +$1,2M</div>
+    </a>
+  </nav>
 
-      <div class="tv-wrap" style="margin-bottom:16px;">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-          { "symbols": [
-              {"proName":"FX_IDC:USDIDR","title":"USD/IDR"},
-              {"proName":"IDX:COMPOSITE","title":"IHSG"},
-              {"proName":"TVC:GOLD","title":"Gold"},
-              {"proName":"TVC:DXY","title":"US Dollar Index"}
-            ],
-            "showSymbolLogo": false, "isTransparent": true, "displayMode": "compact", "colorTheme": "dark", "locale": "id" }
-          </script>
-        </div>
-      </div>
+  <!-- SECTION GRID -->
+  <main class="grid">
 
-      <div class="grid grid-2" style="margin-bottom:14px;">
-        <div class="panel">
-          <div class="panel-title">Arah Indikator Utama<span class="tag">Berdasarkan rilis terakhir</span></div>
-          <table>
-            <tr><td>Pertumbuhan (PDB)</td><td style="text-align:right;color:var(--pos);">↗ 5,29% YoY, melambat dari 5,61%</td></tr>
-            <tr><td>Inflasi</td><td style="text-align:right;color:var(--caution);">↗ 3,19% YoY, naik dari 2,88%</td></tr>
-            <tr><td>BI-Rate</td><td style="text-align:right;color:var(--blue);">→ Ditahan di 5,75%</td></tr>
-            <tr><td>Pengangguran</td><td style="text-align:right;color:var(--pos);">↘ 4,65%, membaik</td></tr>
-            <tr><td>Rupiah (USD/IDR)</td><td style="text-align:right;color:var(--neg);">↓ Melemah, di kisaran 17.800–17.900</td></tr>
-          </table>
-        </div>
-        <div class="panel">
-          <div class="panel-title">Economic Score<span class="tag">Komposit internal Dekaa</span></div>
-          <div class="num" style="font-size:40px;font-weight:600;">64<small style="font-size:15px;color:var(--text-muted);font-family:'IBM Plex Sans';"> / 100</small></div>
-          <div style="margin-top:14px;">
-            <div class="bar-row"><div class="bar-label">Growth</div><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><div class="bar-val">74</div></div>
-            <div class="bar-row"><div class="bar-label">Inflation</div><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><div class="bar-val">58</div></div>
-            <div class="bar-row"><div class="bar-label">Employment</div><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div><div class="bar-val">70</div></div>
-            <div class="bar-row"><div class="bar-label">Monetary</div><div class="bar-track"><div class="bar-fill" style="width:52%"></div></div><div class="bar-val">52</div></div>
-            <div class="bar-row"><div class="bar-label">External</div><div class="bar-track"><div class="bar-fill" style="width:54%"></div></div><div class="bar-val">54</div></div>
-          </div>
-          <p class="src-line">Skor ini adalah rangkuman kualitatif Dekaa dari indikator resmi di halaman ini — bukan angka yang dipublikasikan BI/BPS.</p>
-        </div>
+    <!-- INFLASI -->
+    <article class="card" id="inflasi" style="--kc:var(--amber)">
+      <div class="card-head">
+        <h2>Inflasi</h2>
+        <span class="status-chip a">NAIK, TERKENDALI</span>
       </div>
+      <div class="card-period">Indeks Harga Konsumen · Agustus 2026 · BPS</div>
+      <div class="headline">
+        <div class="headline-value num">3,19%</div>
+        <div class="headline-sub">YoY — IHK 111,97, naik dari 108,51 (Agustus 2025)</div>
+      </div>
+      <div class="chart-box">
+        <svg viewBox="0 0 280 80" preserveAspectRatio="none" aria-label="Tren inflasi YoY Januari–Agustus 2026">
+          <polyline points="10,41.0 47.1,10.0 84.3,42.8 121.4,70.0 158.6,53.1 195.7,46.4 232.9,58.2 270,50.3"
+                     fill="none" stroke="#dba63e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="270" cy="50.3" r="3.2" fill="#dba63e"/>
+        </svg>
+      </div>
+      <div class="metric-rows">
+        <div class="mrow"><span class="mrow-label">MoM</span><span class="mrow-value num">0,21%</span></div>
+        <div class="mrow"><span class="mrow-label">YTD</span><span class="mrow-value num">1,86%</span></div>
+        <div class="mrow"><span class="mrow-label">Inflasi Inti (Core)</span><span class="mrow-value num">2,92%</span></div>
+        <div class="mrow"><span class="mrow-label">Target BI 2026-27</span><span class="mrow-value num">2,5% ± 1%</span></div>
+      </div>
+      <div class="note">Pendorong utama: <b>perawatan pribadi</b> +9,25% yoy (emas perhiasan), <b>transportasi</b> +4,79% yoy (bensin, tarif udara), dan <b>makanan/minuman/tembakau</b> +3,86% yoy. Grafik menunjukkan lonjakan ke 4,76% pada Februari 2026 sebelum melandai kembali.</div>
+    </article>
 
-      <div class="grid grid-4" style="margin-bottom:14px;">
-        <div class="stat pos"><div class="stat-label">GDP Growth <span class="live-chip" style="float:right;">World Bank</span></div><div class="stat-value num" id="ov-gdp">—</div><div class="stat-delta">Tahunan, data terakhir tersedia</div></div>
-        <div class="stat caution"><div class="stat-label">Inflasi Headline</div><div class="stat-value num">3.19<small>% YoY</small></div><div class="stat-delta">Agustus 2026 · BPS</div></div>
-        <div class="stat flat"><div class="stat-label">BI-Rate</div><div class="stat-value num">5.75<small>%</small></div><div class="stat-delta">Ditahan sejak Jul 2026</div></div>
-        <div class="stat neg"><div class="stat-label">USD/IDR <span class="live-chip" style="float:right;">Live</span></div><div class="stat-value num" id="ov-usdidr">—</div><div class="stat-delta" id="ov-usdidr-note">Frankfurter / ECB reference rate</div></div>
+    <!-- MONETER -->
+    <article class="card" id="moneter" style="--kc:var(--blue)">
+      <div class="card-head">
+        <h2>Kebijakan Moneter</h2>
+        <span class="status-chip n">RESTRIKTIF</span>
       </div>
+      <div class="card-period">RDG Bank Indonesia · 18–19 Agustus 2026</div>
+      <div class="headline">
+        <div class="headline-value num">5,75%</div>
+        <div class="headline-sub">BI Rate — tetap untuk 2 RDG berturut-turut</div>
+      </div>
+      <div class="metric-rows">
+        <div class="mrow"><span class="mrow-label">Deposit Facility</span><span class="mrow-value num">4,75%</span></div>
+        <div class="mrow"><span class="mrow-label">Lending Facility</span><span class="mrow-value num">6,50%</span></div>
+        <div class="mrow"><span class="mrow-label">Real Interest Rate</span><span class="mrow-value g num">+2,56%</span></div>
+        <div class="mrow"><span class="mrow-label">Fed Funds Rate (AS)</span><span class="mrow-value num">3,50–3,75%</span></div>
+      </div>
+      <div class="note">BI Rate turun 150bps sepanjang 2024–2025 hingga menyentuh 4,75%, lalu <b>dinaikkan lagi total 100bps sejak Mei 2026</b> ke 5,75% untuk menahan pelemahan rupiah di tengah eskalasi konflik geopolitik. Real interest rate positif (BI Rate − inflasi) menandakan kebijakan masih ketat dengan sengaja.</div>
+    </article>
 
-      <div class="panel" style="margin-bottom:14px;">
-        <div class="panel-title">Economic Bias<span class="tag">Interpretasi, bukan rekomendasi investasi</span></div>
-        <p style="color:var(--text-muted);margin:0 0 14px;">Pertumbuhan ekonomi masih solid di atas 5%, namun melambat dari kuartal sebelumnya. Inflasi bergerak naik mendekati batas atas target BI (2,5%±1%), mendorong Bank Indonesia menahan suku bunga acuan pada level tinggi (5,75%) setelah menaikkannya 100 bps pada Mei–Juni 2026 untuk menjaga stabilitas rupiah. Nilai tukar rupiah tetap menjadi titik tekanan utama.</p>
-        <div class="grid grid-3">
-          <table>
-            <tr><td>Growth</td><td style="text-align:right;"><span class="badge pos" style="padding:2px 10px;">●</span></td></tr>
-            <tr><td>Inflation</td><td style="text-align:right;"><span class="badge caution" style="padding:2px 10px;">●</span></td></tr>
-            <tr><td>Monetary Policy</td><td style="text-align:right;"><span class="badge caution" style="padding:2px 10px;">●</span></td></tr>
-          </table>
-          <table>
-            <tr><td>Employment</td><td style="text-align:right;"><span class="badge pos" style="padding:2px 10px;">●</span></td></tr>
-            <tr><td>External Sector</td><td style="text-align:right;"><span class="badge caution" style="padding:2px 10px;">●</span></td></tr>
-            <tr><td>Currency</td><td style="text-align:right;"><span class="badge neg" style="padding:2px 10px;">●</span></td></tr>
-          </table>
-        </div>
+    <!-- NILAI TUKAR -->
+    <article class="card" id="kurs" style="--kc:var(--red)">
+      <div class="card-head">
+        <h2>Nilai Tukar</h2>
+        <span class="status-chip r">RUPIAH MELEMAH</span>
       </div>
+      <div class="card-period">USD/IDR · 11 September 2026, pagi</div>
+      <div class="headline">
+        <div class="headline-value num">17.590</div>
+        <div class="headline-sub">Rentang harian: Rp17.535 – Rp17.620</div>
+      </div>
+      <div class="metric-rows">
+        <div class="mrow"><span class="mrow-label">DXY (Indeks Dolar AS)</span><span class="mrow-value num">98,78</span></div>
+        <div class="mrow"><span class="mrow-label">Cadangan Devisa</span><span class="mrow-value num">US$146,5M</span></div>
+        <div class="mrow"><span class="mrow-label">Setara bulan impor</span><span class="mrow-value num">5,4 bulan</span></div>
+        <div class="mrow"><span class="mrow-label">Cadev vs bulan lalu</span><span class="mrow-value g num">▲ +US$1,2M</span></div>
+      </div>
+      <div class="note">Rupiah sempat menyentuh sekitar Rp18.200/US$ pada pertengahan tahun sebelum menguat balik ke kisaran Rp17.500-an belakangan ini, namun tetap tertekan oleh yield US Treasury yang mencapai level tertinggi sejak 2023.</div>
+    </article>
 
-      <div class="panel">
-        <div class="panel-title">Economy → Market Map</div>
-        <div class="map-diagram">
-          <div class="flow-row"><div class="flow-node hi">ECONOMY</div></div>
-          <div class="flow-row"><div class="flow-node">Growth</div><div class="flow-node">Inflation</div><div class="flow-node">BI-Rate</div></div>
-          <div class="flow-arrow">↓</div>
-          <div class="flow-row"><div class="flow-node hi">LIQUIDITY &amp; RUPIAH</div></div>
-          <div class="flow-arrow">↓</div>
-          <div class="flow-row"><div class="flow-node">Stocks (IHSG)</div><div class="flow-node">Bonds (INDOGB)</div><div class="flow-node">Gold</div><div class="flow-node">USD/IDR</div></div>
-        </div>
-        <p class="foot-note">Inflasi naik + rupiah tertekan → BI menahan suku bunga tinggi → biaya dana lebih mahal → sentimen pasar saham &amp; obligasi jadi lebih berhati-hati dibanding periode easing.</p>
+    <!-- PERTUMBUHAN EKONOMI -->
+    <article class="card" id="pertumbuhan" style="--kc:var(--green)">
+      <div class="card-head">
+        <h2>Pertumbuhan Ekonomi</h2>
+        <span class="status-chip g">SOLID, MELAMBAT</span>
       </div>
-    </section>
+      <div class="card-period">PDB YoY · Kuartal II-2026 · BPS</div>
+      <div class="headline">
+        <div class="headline-value num">5,29%</div>
+        <div class="headline-sub">YoY — turun dari 5,61% di Kuartal I-2026</div>
+      </div>
+      <div class="chart-box">
+        <svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-label="Pertumbuhan PDB per kuartal">
+          <rect x="15" y="27.3" width="32" height="47.7" rx="2" fill="rgba(255,255,255,0.18)"/>
+          <rect x="61" y="24.8" width="32" height="50.2" rx="2" fill="rgba(255,255,255,0.18)"/>
+          <rect x="107" y="20.0" width="32" height="55.0" rx="2" fill="#35b881"/>
+          <rect x="153" y="23.2" width="32" height="51.9" rx="2" fill="#35b881"/>
+        </svg>
+      </div>
+      <div class="metric-rows">
+        <div class="mrow"><span class="mrow-label">QoQ</span><span class="mrow-value num">3,73%</span></div>
+        <div class="mrow"><span class="mrow-label">Kumulatif H1-2026</span><span class="mrow-value num">5,45%</span></div>
+        <div class="mrow"><span class="mrow-label">Konsumsi Rumah Tangga</span><span class="mrow-value num">5,06% (53,3% PDB)</span></div>
+        <div class="mrow"><span class="mrow-label">PDB Nominal (ADHB)</span><span class="mrow-value num">Rp6.552,1 T</span></div>
+      </div>
+      <div class="note">Grafik: Q2-25 (5,12%) → Q1-26 (5,61%, tertinggi) → Q2-26 (5,29%). Perlambatan wajar setelah momentum Ramadan/Lebaran di Q1; seluruh lapangan usaha tumbuh positif kecuali pertambangan.</div>
+    </article>
 
-    <!-- INDICATORS -->
-    <section class="page" data-page="indicators">
-      <div class="page-head">
-        <div class="page-eyebrow">Key Economic Indicators</div>
-        <h1 class="page-title">Economic Indicators</h1>
+    <!-- KETENAGAKERJAAN -->
+    <article class="card" id="tenagakerja" style="--kc:var(--green)">
+      <div class="card-head">
+        <h2>Ketenagakerjaan</h2>
+        <span class="status-chip g">MEMBAIK</span>
       </div>
+      <div class="card-period">Sakernas Februari 2026 · BPS (rilis terbaru)</div>
+      <div class="headline">
+        <div class="headline-value num">4,68%</div>
+        <div class="headline-sub">Tingkat Pengangguran Terbuka — turun 0,08pp yoy</div>
+      </div>
+      <div class="metric-rows">
+        <div class="mrow"><span class="mrow-label">Angkatan Kerja</span><span class="mrow-value num">154,91 juta</span></div>
+        <div class="mrow"><span class="mrow-label">TPAK</span><span class="mrow-value num">70,56%</span></div>
+        <div class="mrow"><span class="mrow-label">Penduduk Bekerja</span><span class="mrow-value num">147,67 juta</span></div>
+        <div class="mrow"><span class="mrow-label">Rata-rata Upah Buruh</span><span class="mrow-value num">Rp3,29 juta/bln</span></div>
+      </div>
+      <div class="note">Survei Sakernas dilakukan dua kali setahun (Februari & Agustus). Data Agustus 2026 baru dijadwalkan rilis pada November 2026 — angka di atas adalah data resmi paling baru yang tersedia saat ini.</div>
+    </article>
 
-      <div class="panel-title" style="font-size:13px;color:var(--text);margin-bottom:10px;">Growth — BPS</div>
-      <div class="grid grid-3" style="margin-bottom:22px;">
-        <div class="stat pos"><div class="stat-label">GDP Growth Q2 2026</div><div class="stat-value num">5.29<small>% YoY</small></div><div class="stat-delta">Q1 2026: 5,61% · QtQ: 3,73%</div><div class="stat-src">BPS, rilis 5 Agu 2026</div></div>
-        <div class="stat pos"><div class="stat-label">PDB Nominal Q2 2026</div><div class="stat-value num" style="font-size:20px;">Rp6.552,1<small>T</small></div><div class="stat-delta">Harga berlaku</div><div class="stat-src">BPS</div></div>
-        <div class="stat"><div class="stat-label">Konsumsi RT thd PDB</div><div class="stat-value num">53.3<small>%</small></div><div class="stat-delta">Tumbuh 5,06% YoY</div><div class="stat-src">BPS</div></div>
+    <!-- SEKTOR EKSTERNAL -->
+    <article class="card" id="eksternal" style="--kc:var(--red)">
+      <div class="card-head">
+        <h2>Sektor Eksternal</h2>
+        <span class="status-chip r">TERTEKAN</span>
       </div>
+      <div class="card-period">Neraca Dagang Juli 2026 · Current Account Q2-2026</div>
+      <div class="headline">
+        <div class="headline-value num">-3,3%</div>
+        <div class="headline-sub">Defisit transaksi berjalan / PDB — terdalam sejak 2004</div>
+      </div>
+      <div class="metric-rows">
+        <div class="mrow"><span class="mrow-label">Neraca Dagang (Jul)</span><span class="mrow-value g num">+US$0,12M</span></div>
+        <div class="mrow"><span class="mrow-label">Kumulatif Jan–Jul</span><span class="mrow-value num">+US$3,70M</span></div>
+        <div class="mrow"><span class="mrow-label">Current Account (Q2)</span><span class="mrow-value r num">-US$12,5M</span></div>
+        <div class="mrow"><span class="mrow-label">Current Account (Q1)</span><span class="mrow-value a num">-US$3,6M (-1,0%)</span></div>
+      </div>
+      <div class="note">Pelebaran CAD dipicu lonjakan impor migas akibat harga minyak dunia yang tinggi serta penyempitan surplus nonmigas. Neraca dagang Juli kembali surplus tipis setelah defisit dua bulan beruntun (Mei & Juni).</div>
+    </article>
 
-      <div class="panel-title" style="font-size:13px;color:var(--text);margin-bottom:10px;">Inflation — BPS</div>
-      <div class="grid grid-3" style="margin-bottom:22px;">
-        <div class="stat caution"><div class="stat-label">Headline Inflation</div><div class="stat-value num">3.19<small>% YoY</small></div><div class="stat-delta">MoM 0,21% · YTD 1,86%</div><div class="stat-src">BPS, Agustus 2026</div></div>
-        <div class="stat caution"><div class="stat-label">Core Inflation</div><div class="stat-value num">2.92<small>% YoY</small></div><div class="stat-delta">Tertinggi sejak Mar 2023</div><div class="stat-src">BPS / Trading Economics</div></div>
-        <div class="stat"><div class="stat-label">Target BI</div><div class="stat-value num">2.5<small>±1%</small></div><div class="stat-delta">Rentang 1,5%–3,5%</div><div class="stat-src">Bank Indonesia</div></div>
+    <!-- UANG & KREDIT -->
+    <article class="card" id="uangkredit" style="--kc:var(--green)">
+      <div class="card-head">
+        <h2>Uang &amp; Kredit</h2>
+        <span class="status-chip g">EKSPANSIF</span>
       </div>
+      <div class="card-period">Statistik Uang Beredar Juli–Agustus 2026 · BI</div>
+      <div class="headline">
+        <div class="headline-value num">+8,3%</div>
+        <div class="headline-sub">Pertumbuhan M2 YoY — posisi Rp10.371,1 T (Jul-26)</div>
+      </div>
+      <div class="metric-rows">
+        <div class="mrow"><span class="mrow-label">M1 Growth</span><span class="mrow-value num">+10,0%</span></div>
+        <div class="mrow"><span class="mrow-label">Kredit Perbankan</span><span class="mrow-value num">+13,0%</span></div>
+        <div class="mrow"><span class="mrow-label">Uang Primer (M0, Agustus)</span><span class="mrow-value num">+16,3%</span></div>
+        <div class="mrow"><span class="mrow-label">Insentif Likuiditas KLM</span><span class="mrow-value num">Rp446,5 T</span></div>
+      </div>
+      <div class="note">Kredit tumbuh makin kencang (13,0% yoy, dari 12,1% di Juni) ditopang kebijakan makroprudensial longgar BI. Likuiditas yang ekspansif ini mendukung konsumsi &amp; investasi domestik.</div>
+    </article>
 
-      <div class="panel-title" style="font-size:13px;color:var(--text);margin-bottom:10px;">Monetary Policy — Bank Indonesia</div>
-      <div class="grid grid-3" style="margin-bottom:22px;">
-        <div class="stat flat"><div class="stat-label">BI-Rate</div><div class="stat-value num">5.75<small>%</small></div><div class="stat-delta">Ditahan, RDG 18–19 Agu 2026</div></div>
-        <div class="stat"><div class="stat-label">Deposit Facility</div><div class="stat-value num">4.75<small>%</small></div></div>
-        <div class="stat"><div class="stat-label">Lending Facility</div><div class="stat-value num">6.50<small>%</small></div></div>
+    <!-- PASAR KEUANGAN -->
+    <article class="card" id="pasar" style="--kc:var(--red)">
+      <div class="card-head">
+        <h2>Pasar Keuangan</h2>
+        <span class="status-chip r">TERKOREKSI</span>
       </div>
-
-      <div class="panel-title" style="font-size:13px;color:var(--text);margin-bottom:10px;">Labor Market — BPS Sakernas</div>
-      <div class="grid grid-3">
-        <div class="stat pos"><div class="stat-label">Tingkat Pengangguran</div><div class="stat-value num">4.65<small>%</small></div><div class="stat-delta pos">Mei 2026, turun dari 4,68%</div></div>
-        <div class="stat"><div class="stat-label">Angkatan Kerja</div><div class="stat-value num">155.41<small>Juta</small></div></div>
-        <div class="stat"><div class="stat-label">Upah Rata-rata Buruh</div><div class="stat-value num">3.39<small>Jt/bln</small></div></div>
+      <div class="card-period">Penutupan 10 September 2026 · Komoditas awal Sep 2026</div>
+      <div class="headline">
+        <div class="headline-value num">6.589</div>
+        <div class="headline-sub">IHSG — turun 1,33% pada penutupan terakhir</div>
       </div>
-      <p class="foot-note">Sumber: Badan Pusat Statistik (bps.go.id) &amp; Bank Indonesia (bi.go.id). Semua angka pada halaman ini adalah rilis resmi terakhir yang tersedia per 11 September 2026.</p>
-    </section>
-
-    <!-- MONETARY POLICY -->
-    <section class="page" data-page="monetary">
-      <div class="page-head">
-        <div class="page-eyebrow">Bank Indonesia</div>
-        <h1 class="page-title">Monetary Policy</h1>
+      <div class="metric-rows">
+        <div class="mrow"><span class="mrow-label">LQ45</span><span class="mrow-value r num">655,98 (-1,25%)</span></div>
+        <div class="mrow"><span class="mrow-label">Yield SBN 10Y</span><span class="mrow-value num">≈7,10%</span></div>
+        <div class="mrow"><span class="mrow-label">Gold (spot)</span><span class="mrow-value num">US$4.365,5/oz</span></div>
+        <div class="mrow"><span class="mrow-label">Oil (Brent)</span><span class="mrow-value r num">US$107,63</span></div>
+        <div class="mrow"><span class="mrow-label">Coal (Newcastle)</span><span class="mrow-value num">≈US$153/ton</span></div>
+        <div class="mrow"><span class="mrow-label">CPO</span><span class="mrow-value num">≈MYR4.929/ton</span></div>
       </div>
-      <div class="grid grid-2" style="margin-bottom:14px;">
-        <div class="panel">
-          <div class="panel-title">BI Rate — 12 Bulan Terakhir<span class="tag">Bank Indonesia</span></div>
-          <canvas id="chart-birate" height="180"></canvas>
-          <p class="src-line">Sumber: bi.go.id — pengumuman RDG bulanan. Kenaikan Mei–Jun 2026 (total 100 bps) merespons pelemahan rupiah.</p>
-        </div>
-        <div class="panel">
-          <div class="panel-title">Policy Stance</div>
-          <span class="badge caution">Restrictive / Hold</span>
-          <table style="margin-top:16px;">
-            <tr><td>Deposit Facility</td><td style="text-align:right;" class="num-cell">4.75%</td></tr>
-            <tr><td>BI-Rate</td><td style="text-align:right;" class="num-cell">5.75%</td></tr>
-            <tr><td>Lending Facility</td><td style="text-align:right;" class="num-cell">6.50%</td></tr>
-            <tr><td>Arah 3 bulan terakhir</td><td style="text-align:right;color:var(--caution);">→ Ditahan (setelah naik)</td></tr>
-          </table>
-        </div>
-      </div>
-      <div class="grid grid-2">
-        <div class="panel">
-          <div class="panel-title">Rapat Berikutnya <span class="live-chip">Jadwal Resmi BI</span></div>
-          <div style="font-size:15px;font-weight:500;">Rapat Dewan Gubernur (RDG) Bulanan</div>
-          <div class="num" style="font-size:22px;margin-top:6px;">22–23 September 2026</div>
-          <p class="src-line">Sumber: Jadwal RDG Bank Indonesia 2026 (bi.go.id).</p>
-        </div>
-        <div class="panel">
-          <div class="panel-title">Konteks Pasar</div>
-          <p style="color:var(--text-muted);font-size:13px;">BI telah menahan BI-Rate dua kali beruntun (Jul &amp; Agu 2026) di 5,75% setelah kenaikan kumulatif 100 bps pada Mei–Jun 2026. Fokus kebijakan saat ini: stabilitas rupiah di tengah gejolak global, dengan inflasi inti yang mulai naik mendekati batas atas target.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- INFLATION -->
-    <section class="page" data-page="inflation">
-      <div class="page-head">
-        <div class="page-eyebrow">Price Stability — BPS</div>
-        <h1 class="page-title">Inflation Dashboard</h1>
-      </div>
-      <div class="grid grid-4" style="margin-bottom:14px;">
-        <div class="stat caution"><div class="stat-label">Headline YoY</div><div class="stat-value num">3.19<small>%</small></div></div>
-        <div class="stat caution"><div class="stat-label">Core YoY</div><div class="stat-value num">2.92<small>%</small></div></div>
-        <div class="stat"><div class="stat-label">MoM</div><div class="stat-value num">0.21<small>%</small></div></div>
-        <div class="stat"><div class="stat-label">YTD</div><div class="stat-value num">1.86<small>%</small></div></div>
-      </div>
-      <div class="grid grid-2">
-        <div class="panel">
-          <div class="panel-title">Inflation Trend — Headline YoY</div>
-          <canvas id="chart-inflation" height="180"></canvas>
-          <table style="margin-top:14px;">
-            <tr><td>Agustus 2026</td><td style="text-align:right;" class="num-cell">3.19%</td></tr>
-            <tr><td>Juli 2026</td><td style="text-align:right;" class="num-cell">2.88%</td></tr>
-            <tr><td>Perubahan</td><td style="text-align:right;color:var(--caution);">+0,31 pp</td></tr>
-            <tr><td>Trend</td><td style="text-align:right;color:var(--caution);">↗ Naik, mendekati batas atas target</td></tr>
-          </table>
-        </div>
-        <div class="panel">
-          <div class="panel-title">Kontributor Inflasi Terverifikasi</div>
-          <div class="bar-row"><div class="bar-label">Komponen Inti</div><div class="bar-track"><div class="bar-fill" style="width:79%"></div></div><div class="bar-val">2.92%</div></div>
-          <div class="bar-row"><div class="bar-label">Transportasi</div><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><div class="bar-val">4.79%</div></div>
-          <p class="src-line">Andil komponen inti: 1,87 pp dari 3,19% headline. Andil transportasi: 0,58 pp (BPS, rilis 1 Sep 2026). Rincian per kelompok pengeluaran lainnya (pangan, perumahan, kesehatan) tersedia lengkap di rilis BRS BPS — belum kami tampilkan di sini agar tidak menampilkan angka yang tidak terverifikasi.</p>
-          <p class="src-line"><a href="https://www.bps.go.id/id/pressrelease/2026/09/01/2611/inflasi-year-on-year--y-on-y--pada-agustus-2026-sebesar-3-19-persen-.html" target="_blank" rel="noopener">Baca rilis lengkap BPS →</a></p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FINANCIAL MARKETS -->
-    <section class="page" data-page="markets">
-      <div class="page-head">
-        <div class="page-eyebrow">Investor &amp; Trader View · Live via TradingView</div>
-        <h1 class="page-title">Financial Markets</h1>
-      </div>
-
-      <div class="panel" style="margin-bottom:14px;">
-        <div class="panel-title">USD/IDR — Live Chart<span class="live-chip">TradingView</span></div>
-        <div class="tv-wrap">
-          <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-            { "autosize": true, "symbol": "FX_IDC:USDIDR", "interval": "D", "timezone": "Asia/Jakarta",
-              "theme": "dark", "style": "3", "locale": "id", "backgroundColor": "rgba(13,27,47,1)",
-              "gridColor": "rgba(28,51,82,0.4)", "hide_top_toolbar": false, "hide_legend": false,
-              "allow_symbol_change": false, "support_host": "https://www.tradingview.com" }
-            </script>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-2" style="margin-bottom:14px;">
-        <div class="panel">
-          <div class="panel-title">IHSG (Jakarta Composite) <span class="live-chip">TradingView</span></div>
-          <div class="tv-wrap">
-            <div class="tradingview-widget-container">
-              <div class="tradingview-widget-container__widget"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-              { "symbols": [["IDX:COMPOSITE|1D"]], "chartOnly": false, "width": "100%", "height": "280",
-                "locale": "id", "colorTheme": "dark", "autosize": true, "showVolume": false, "showMA": false,
-                "hideDateRanges": false, "hideMarketStatus": false, "hideSymbolLogo": true, "scalePosition": "right",
-                "scaleMode": "Normal", "fontFamily": "IBM Plex Sans", "noTimeScale": false, "valuesTracking": "1",
-                "changeMode": "price-and-percent", "chartType": "area" }
-              </script>
-            </div>
-          </div>
-          <p class="src-line">Penutupan terakhir tercatat BEI: 6.619,67 (Senin, 7 Sep 2026). Widget di atas memperbarui otomatis mengikuti jam bursa.</p>
-        </div>
-        <div class="panel">
-          <div class="panel-title">Gold — XAU/USD <span class="live-chip">TradingView</span></div>
-          <div class="tv-wrap">
-            <div class="tradingview-widget-container">
-              <div class="tradingview-widget-container__widget"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-              { "symbols": [["TVC:GOLD|1D"]], "chartOnly": false, "width": "100%", "height": "280",
-                "locale": "id", "colorTheme": "dark", "autosize": true, "showVolume": false, "showMA": false,
-                "hideDateRanges": false, "hideMarketStatus": false, "hideSymbolLogo": true, "scalePosition": "right",
-                "scaleMode": "Normal", "fontFamily": "IBM Plex Sans", "noTimeScale": false, "valuesTracking": "1",
-                "changeMode": "price-and-percent", "chartType": "area" }
-              </script>
-            </div>
-          </div>
-          <p class="src-line">Harga referensi terakhir: ±US$4.394/oz (9 Sep 2026), naik ±20,7% YoY (Trading Economics).</p>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">Obligasi Pemerintah (INDOGB) 10 Tahun</div>
-        <div class="stat-value num" style="font-size:30px;">≈7.10<small>%</small></div>
-        <div class="stat-delta">Kutipan pasar sekunder OTC, 3 September 2026</div>
-        <p class="src-line">Yield naik signifikan sepanjang 2026 seiring kenaikan BI-Rate dan tekanan rupiah — sempat menyentuh ±7,37% pada akhir Juli 2026. Kami belum menampilkan kurva penuh (2Y/5Y/20Y) karena data real-time gratis dengan tenor lengkap tidak tersedia untuk akses publik tanpa langganan (Refinitiv/Bloomberg/IBPA). <a href="https://tradingeconomics.com/indonesia/government-bond-yield" target="_blank" rel="noopener">Lihat data lengkap di Trading Economics →</a></p>
-      </div>
-    </section>
-
-    <!-- EXTERNAL SECTOR -->
-    <section class="page" data-page="external">
-      <div class="page-head">
-        <div class="page-eyebrow">Balance of Payments — BI / BPS</div>
-        <h1 class="page-title">External Sector</h1>
-      </div>
-      <div class="grid grid-3">
-        <div class="stat pos"><div class="stat-label">Neraca Perdagangan</div><div class="stat-value num">+$0.13<small>B</small></div><div class="stat-delta">Juli 2026 · surplus tipis</div><div class="stat-src">BPS</div></div>
-        <div class="stat pos"><div class="stat-label">Cadangan Devisa</div><div class="stat-value num">$146.5<small>B</small></div><div class="stat-delta pos">Agustus 2026, naik dari $145,3M</div><div class="stat-src">Bank Indonesia</div></div>
-        <div class="stat flat"><div class="stat-label">Current Account <span class="live-chip" style="float:right;">World Bank</span></div><div class="stat-value num" id="ext-ca">—</div><div class="stat-delta">% PDB, data tahunan terakhir</div></div>
-      </div>
-      <div class="panel" style="margin-top:14px;">
-        <div class="panel-title">Ketahanan Eksternal</div>
-        <p style="color:var(--text-muted);font-size:13px;">Cadangan devisa akhir Agustus 2026 setara pembiayaan 5,4 bulan impor — di atas standar kecukupan internasional (~3 bulan). Surplus neraca dagang tipis mencerminkan impor yang tumbuh lebih cepat dibanding ekspor sepanjang 2026.</p>
-        <p class="src-line">Sumber: Bank Indonesia, siaran pers cadangan devisa Agustus 2026 (7 Sep 2026); BPS neraca perdagangan.</p>
-      </div>
-    </section>
-
-    <!-- MONEY & CREDIT -->
-    <section class="page" data-page="money">
-      <div class="page-head">
-        <div class="page-eyebrow">Liquidity Conditions</div>
-        <h1 class="page-title">Money &amp; Credit</h1>
-      </div>
-      <div class="panel" style="margin-bottom:14px;">
-        <div class="panel-title">Pertumbuhan Kredit Perbankan</div>
-        <div class="stat-value num" style="font-size:32px;">13.58<small>% YoY</small></div>
-        <div class="stat-delta pos">Juli 2026, naik dari 12,67% (Juni 2026)</div>
-        <p class="src-line">Sumber: Bank Indonesia, Statistik Ekonomi dan Keuangan Indonesia (SEKI).</p>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Data yang Belum Tersedia Gratis</div>
-        <p style="color:var(--text-muted);font-size:13px;margin:0;">Pertumbuhan M1/M2 dan rincian kredit per segmen (modal kerja, investasi, konsumsi) dipublikasikan BI melalui SEKI, namun tidak tersedia sebagai API publik gratis yang bisa ditarik langsung dari browser. Daripada menampilkan angka perkiraan, kami mengarahkan Anda ke sumber resminya.</p>
-        <p class="src-line"><a href="https://www.bi.go.id/seki/tabel/TabelSeki-3.aspx" target="_blank" rel="noopener">Buka Statistik Uang Beredar — SEKI Bank Indonesia →</a></p>
-      </div>
-    </section>
-
-    <!-- LABOR -->
-    <section class="page" data-page="labor">
-      <div class="page-head">
-        <div class="page-eyebrow">Employment — BPS Sakernas</div>
-        <h1 class="page-title">Labor Market</h1>
-      </div>
-      <div class="grid grid-4" style="margin-bottom:14px;">
-        <div class="stat pos"><div class="stat-label">TPT (Unemployment) <span class="live-chip" style="float:right;">World Bank</span></div><div class="stat-value num" id="lab-unemp">—</div><div class="stat-delta">Tahunan (WB) · BPS: 4,65% (Mei 2026)</div></div>
-        <div class="stat"><div class="stat-label">Angkatan Kerja</div><div class="stat-value num">155.41<small>Juta</small></div></div>
-        <div class="stat"><div class="stat-label">Penduduk Bekerja</div><div class="stat-value num">148.19<small>Juta</small></div></div>
-        <div class="stat"><div class="stat-label">TPAK</div><div class="stat-value num">70.57<small>%</small></div></div>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Tren TPT — BPS Sakernas (Semesteran)</div>
-        <canvas id="chart-tpt" height="160"></canvas>
-        <p class="src-line">Sumber: BPS Sakernas Februari &amp; Mei/Agustus setiap tahun. Rincian per provinsi dan pendidikan tersedia di bps.go.id.</p>
-      </div>
-    </section>
-
-    <!-- ECONOMIC CYCLE -->
-    <section class="page" data-page="cycle">
-      <div class="page-head">
-        <div class="page-eyebrow">Analisis Internal Dekaa</div>
-        <h1 class="page-title">Economic Cycle</h1>
-        <p class="page-note">Estimasi posisi siklus berdasarkan kombinasi arah pertumbuhan &amp; inflasi terkini — bukan klasifikasi resmi dari BI/BPS.</p>
-      </div>
-      <div class="panel" style="margin-bottom:14px;">
-        <div class="panel-title">Growth × Inflation Quadrant</div>
-        <div class="quad">
-          <div class="quad-cell active" style="background:#e0ab3f1f;"><div class="qtitle">🔥 Overheating (leaning)</div><div class="qsub">Growth ↑ (melambat) · Inflation ↑</div></div>
-          <div class="quad-cell" style="background:#ef5b6a14;"><div class="qtitle">🔴 Stagflation</div><div class="qsub">Growth ↓ · Inflation ↑</div></div>
-          <div class="quad-cell" style="background:#22b8a314;"><div class="qtitle">🟢 Goldilocks</div><div class="qsub">Growth ↑ · Inflation ↓</div></div>
-          <div class="quad-cell" style="background:#1c3352;"><div class="qtitle">🔵 Recession</div><div class="qsub">Growth ↓ · Inflation ↓</div></div>
-        </div>
-        <p class="foot-note">Pertumbuhan masih di atas 5% namun melambat dua kuartal beruntun, sementara inflasi naik mendekati batas atas target — kombinasi ini paling dekat dengan kuadran "overheating ringan", meski belum ekstrem.</p>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Cycle Position</div>
-        <table><tr><td>Recovery → <strong>Late Expansion</strong> → Peak → Slowdown</td><td style="text-align:right;color:var(--blue);">● Estimasi posisi saat ini</td></tr></table>
-      </div>
-    </section>
-
-    <!-- CALENDAR -->
-    <section class="page" data-page="calendar">
-      <div class="page-head">
-        <div class="page-eyebrow">Live Economic Calendar</div>
-        <h1 class="page-title">Economic Calendar</h1>
-      </div>
-      <div class="tv-wrap" style="margin-bottom:14px;">
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
-          { "colorTheme": "dark", "isTransparent": true, "width": "100%", "height": "550", "locale": "id",
-            "importanceFilter": "-1,0,1", "countryFilter": "id,us,cn,eu,jp" }
-          </script>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Agenda Terkonfirmasi</div>
-        <table>
-          <tr><th>Tanggal</th><th>Acara</th><th>Sumber</th></tr>
-          <tr><td>22–23 Sep 2026</td><td>RDG Bank Indonesia — Keputusan BI-Rate</td><td>Jadwal resmi BI</td></tr>
-        </table>
-        <p class="foot-note">Widget kalender di atas menarik jadwal langsung dari TradingView (data disediakan pihak ketiga, mencakup rilis BPS/BI yang relevan bagi Indonesia serta AS, Tiongkok, Uni Eropa &amp; Jepang). Tanggal rilis BPS bulanan berikutnya (inflasi, PMI) mengikuti pola rutin awal bulan — tanggal pastinya diumumkan BPS beberapa hari sebelumnya.</p>
-      </div>
-    </section>
-
-    <!-- DATA CENTER -->
-    <section class="page" data-page="datacenter">
-      <div class="page-head">
-        <div class="page-eyebrow">Raw Database</div>
-        <h1 class="page-title">Data Center</h1>
-      </div>
-      <div class="panel">
-        <table>
-          <tr><th>Indicator</th><th>Value</th><th>Period</th><th>Source</th></tr>
-          <tr><td>GDP Growth (YoY)</td><td class="num-cell">5.29%</td><td>Q2 2026</td><td>BPS</td></tr>
-          <tr><td>Inflation Headline (YoY)</td><td class="num-cell">3.19%</td><td>Aug 2026</td><td>BPS</td></tr>
-          <tr><td>Inflation Core (YoY)</td><td class="num-cell">2.92%</td><td>Aug 2026</td><td>BPS</td></tr>
-          <tr><td>BI-Rate</td><td class="num-cell">5.75%</td><td>as of 19 Aug 2026</td><td>Bank Indonesia</td></tr>
-          <tr><td>Unemployment (TPT)</td><td class="num-cell">4.65%</td><td>May 2026</td><td>BPS Sakernas</td></tr>
-          <tr><td>Trade Balance</td><td class="num-cell">+US$0.13B</td><td>Jul 2026</td><td>BPS</td></tr>
-          <tr><td>FX Reserves</td><td class="num-cell">US$146.5B</td><td>Aug 2026</td><td>Bank Indonesia</td></tr>
-          <tr><td>Bank Credit Growth</td><td class="num-cell">13.58%</td><td>Jul 2026</td><td>Bank Indonesia (SEKI)</td></tr>
-          <tr><td>10Y Govt Bond Yield</td><td class="num-cell">≈7.10%</td><td>3 Sep 2026</td><td>Secondary market OTC (Trading Economics)</td></tr>
-          <tr><td>USD/IDR</td><td class="num-cell" id="dc-fx">—</td><td>Live</td><td>Frankfurter / ECB reference</td></tr>
-          <tr><td>IHSG</td><td class="num-cell">6,619.67</td><td>Close, 7 Sep 2026</td><td>Bursa Efek Indonesia</td></tr>
-          <tr><td>Gold (XAU/USD)</td><td class="num-cell">≈$4,394</td><td>9 Sep 2026</td><td>Trading Economics</td></tr>
-          <tr><td>Current Account (% GDP)</td><td class="num-cell" id="dc-ca">—</td><td>Annual, latest</td><td>World Bank</td></tr>
-        </table>
-      </div>
-      <p class="foot-note">Setiap angka di atas dapat ditelusuri ke sumber resminya (BI, BPS, World Bank, atau agregator pasar seperti Trading Economics/TradingView). Tidak ada angka yang direka-reka. Baris "Live" memperbarui sendiri saat halaman dibuka; baris lain adalah snapshot bertanggal dari rilis resmi terakhir.</p>
-    </section>
-
-    <!-- SOURCES -->
-    <section class="page" data-page="sources">
-      <div class="page-head">
-        <div class="page-eyebrow">Transparansi Data</div>
-        <h1 class="page-title">Sumber &amp; Metodologi</h1>
-      </div>
-      <div class="panel" style="margin-bottom:14px;">
-        <div class="panel-title">Sumber Data</div>
-        <ul class="src-list">
-          <li><strong>Bank Indonesia (bi.go.id)</strong> — BI-Rate, Deposit/Lending Facility, jadwal RDG, cadangan devisa, kredit perbankan.</li>
-          <li><strong>Badan Pusat Statistik / BPS (bps.go.id)</strong> — inflasi, PDB, ketenagakerjaan (Sakernas), neraca perdagangan.</li>
-          <li><strong>World Bank Open Data API</strong> — indikator tahunan (pertumbuhan PDB, inflasi, pengangguran, current account) untuk perbandingan historis, diambil langsung saat halaman dibuka.</li>
-          <li><strong>Frankfurter API (data ECB)</strong> — kurs referensi USD/IDR, diambil langsung saat halaman dibuka.</li>
-          <li><strong>TradingView</strong> — widget harga pasar langsung untuk USD/IDR, IHSG, emas, dan kalender ekonomi global.</li>
-          <li><strong>Trading Economics</strong> — data pelengkap untuk harga emas dan yield obligasi pemerintah 10 tahun.</li>
-        </ul>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Batasan yang Kami Sadari</div>
-        <p style="color:var(--text-muted);font-size:13px;">BI, BPS, dan Bursa Efek Indonesia tidak menyediakan API publik gratis yang bisa diakses langsung dari browser (kena kebijakan CORS). Untuk indikator yang datanya perlu diperbarui manual (BI-Rate, inflasi, PDB, neraca dagang, cadangan devisa, kredit), kami menampilkan angka rilis resmi terakhir lengkap dengan tanggal dan sumber — bukan data yang mengalir otomatis setiap detik. Untuk integrasi data real-time penuh dari sumber resmi, dibutuhkan backend/proxy yang menjadwalkan pengambilan data dari BI/BPS, atau berlangganan vendor data (Refinitiv, Bloomberg, IBPA).</p>
-      </div>
-    </section>
-
-    <!-- MY ANALYSIS -->
-    <section class="page" data-page="journal">
-      <div class="page-head">
-        <div class="page-eyebrow">Research Workspace</div>
-        <h1 class="page-title">My Economic Analysis</h1>
-        <p class="page-note">Tersimpan otomatis di perangkat ini.</p>
-      </div>
-      <div class="panel" style="margin-bottom:18px;">
-        <div class="field-wrap"><label class="field">Economic Regime</label>
-          <select id="j-regime"><option>Late Expansion</option><option>Expansion</option><option>Recovery</option><option>Peak</option><option>Contraction</option><option>Goldilocks</option><option>Stagflation</option><option>Overheating</option><option>Recession</option></select>
-        </div>
-        <div class="field-wrap"><label class="field">Bias</label>
-          <select id="j-bias"><option>Neutral</option><option>Moderately Expansionary</option><option>Strongly Expansionary</option><option>Moderately Contractionary</option><option>Strongly Contractionary</option></select>
-        </div>
-        <div class="field-wrap"><label class="field">Key Drivers</label><textarea id="j-drivers" placeholder="Inflasi naik, BI menahan suku bunga tinggi, rupiah tertekan..."></textarea></div>
-        <div class="field-wrap"><label class="field">My Thesis</label><textarea id="j-thesis" placeholder="Tesis analisis Anda..."></textarea></div>
-        <div class="field-wrap"><label class="field">What Changed?</label><textarea id="j-changed"></textarea></div>
-        <div class="field-wrap"><label class="field">Result</label><textarea id="j-result"></textarea></div>
-        <button class="primary" id="j-save">Save analysis</button>
-      </div>
-      <div id="journal-list"></div>
-    </section>
+      <div class="note">IHSG tertekan sejalan bursa Asia yang melemah dan lonjakan harga minyak akibat konflik AS–Iran. Yield SBN 10 tahun naik dari kisaran 6,4% di awal tahun ke atas 7% mengikuti tren yield US Treasury.</div>
+    </article>
 
   </main>
+
+  <!-- EKONOMI GLOBAL -->
+  <section class="card wide" id="global" style="--kc:var(--red)">
+    <div class="card-head">
+      <h2>Ekonomi Global</h2>
+      <span class="status-chip r">RISIKO TINGGI</span>
+    </div>
+    <div class="card-period">Data per 9–11 September 2026</div>
+    <div class="global-grid">
+      <div class="global-item">
+        <div class="gl-label">Fed Funds Rate</div>
+        <div class="gl-value num">3,50–3,75%</div>
+        <div class="gl-sub">RDG berikutnya 16 Sep 2026</div>
+      </div>
+      <div class="global-item">
+        <div class="gl-label">US 10-Year Treasury</div>
+        <div class="gl-value num">≈4,85%</div>
+        <div class="gl-sub">Tertinggi sejak Okt 2023</div>
+      </div>
+      <div class="global-item">
+        <div class="gl-label">DXY</div>
+        <div class="gl-value num">98,78</div>
+        <div class="gl-sub">Penutupan 9 Sep 2026</div>
+      </div>
+      <div class="global-item">
+        <div class="gl-label">Oil (Brent)</div>
+        <div class="gl-value num">US$107,63</div>
+        <div class="gl-sub">Melonjak, konflik AS–Iran</div>
+      </div>
+      <div class="global-item">
+        <div class="gl-label">China GDP (Q2-26)</div>
+        <div class="gl-value num">+4,3% yoy</div>
+        <div class="gl-sub">Terlemah sejak Q4 2022</div>
+      </div>
+      <div class="global-item">
+        <div class="gl-label">China Manufacturing PMI</div>
+        <div class="gl-value num">49,8</div>
+        <div class="gl-sub">Kontraksi bulan ke-2 (Agu-26)</div>
+      </div>
+      <div class="global-item">
+        <div class="gl-label">China Non-Manufacturing PMI</div>
+        <div class="gl-value num">49,0</div>
+        <div class="gl-sub">Agustus 2026</div>
+      </div>
+      <div class="global-item">
+        <div class="gl-label">Indeks Risiko Global</div>
+        <div class="gl-value num" style="color:var(--red)">TINGGI</div>
+        <div class="gl-sub">Perang, yield AS, China melambat</div>
+      </div>
+    </div>
+    <div class="note">Eskalasi konflik AS–Iran mendorong harga minyak ke level tertinggi dalam beberapa bulan, memperberat defisit migas dan current account Indonesia. Yield US Treasury yang tinggi menambah tekanan pada arus modal ke pasar berkembang, sementara pertumbuhan China yang melambat menahan permintaan komoditas ekspor Indonesia.</div>
+  </section>
+
+  <!-- ECONOMIC SIGNAL -->
+  <section class="signal-board" id="signal">
+    <div class="card-head">
+      <h2>Economic Signal</h2>
+      <span class="card-period">Ringkasan 9 komponen penyusun Skor Ekonomi</span>
+    </div>
+    <div class="signal-grid">
+      <div class="signal-item"><span class="signal-name">Pertumbuhan (PDB)</span><span class="signal-status a"><span class="dot"></span>Melambat</span></div>
+      <div class="signal-item"><span class="signal-name">Inflasi</span><span class="signal-status a"><span class="dot"></span>Naik, terkendali</span></div>
+      <div class="signal-item"><span class="signal-name">Suku Bunga</span><span class="signal-status n"><span class="dot"></span>Restriktif</span></div>
+      <div class="signal-item"><span class="signal-name">Nilai Tukar</span><span class="signal-status r"><span class="dot"></span>Melemah</span></div>
+      <div class="signal-item"><span class="signal-name">Ketenagakerjaan</span><span class="signal-status g"><span class="dot"></span>Membaik</span></div>
+      <div class="signal-item"><span class="signal-name">Transaksi Berjalan</span><span class="signal-status r"><span class="dot"></span>Melebar tajam</span></div>
+      <div class="signal-item"><span class="signal-name">Likuiditas (M2/Kredit)</span><span class="signal-status g"><span class="dot"></span>Ekspansif</span></div>
+      <div class="signal-item"><span class="signal-name">Pasar Keuangan</span><span class="signal-status r"><span class="dot"></span>Terkoreksi</span></div>
+      <div class="signal-item"><span class="signal-name">Risiko Global</span><span class="signal-status r"><span class="dot"></span>Tinggi</span></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <h3>Sumber data</h3>
+    Badan Pusat Statistik / BPS (bps.go.id) — inflasi, PDB, ketenagakerjaan, neraca dagang. Bank Indonesia (bi.go.id) — BI Rate, uang beredar &amp; kredit, cadangan devisa, neraca pembayaran/current account, JISDOR. Bursa Efek Indonesia &amp; data vendor pasar (RTI/Investing.com) — IHSG, LQ45, yield SBN. Federal Reserve / FRED — Fed Funds Rate, yield US Treasury. ICE, Kitco, Trading Economics — DXY, emas, minyak Brent, batu bara Newcastle, CPO. National Bureau of Statistics China &amp; S&amp;P Global — PDB dan PMI Tiongkok. Diverifikasi melalui liputan CNBC Indonesia, Kompas, Antara, Bisnis.com, Reuters, dan rilis resmi masing-masing lembaga per 11 September 2026.
+
+    <h3>Tentang Skor Ekonomi &amp; Economic Signal</h3>
+    Skor 55/100 dan label "Transisi · Tekanan Eksternal Meningkat" adalah <b>heuristik ilustratif</b> yang dihitung dari rata-rata sederhana 9 komponen makro di atas — bukan indeks resmi dari BPS, BI, atau lembaga lain. Metodologi bobot dapat disesuaikan sesuai kebutuhan analisis Anda.
+
+    <h3>Data resmi vs data pasar</h3>
+    Indikator resmi (inflasi, PDB, TPT, neraca dagang, current account, M2/kredit, cadangan devisa) dirilis bulanan/kuartalan oleh BPS &amp; BI dan tetap berlaku sampai rilis berikutnya. Indikator pasar (kurs, IHSG, yield SBN, emas, minyak, DXY, US Treasury) bergerak setiap saat — nilai di atas adalah snapshot per waktu yang tercantum dan akan berubah. Untuk tampilan real-time, hubungkan bagian ini ke API resmi (BPS Web API, BI SEKI, feed IDX/RTI, FRED).
+
+    <h3>Disclaimer</h3>
+    Dashboard ini disusun untuk tujuan informasi dan pemantauan, bukan rekomendasi investasi. Selalu verifikasi ulang ke sumber resmi sebelum mengambil keputusan finansial atau bisnis penting.
+  </footer>
+
 </div>
-
-<script>
-const PAGES = [
-  {id:'overview',icon:'🏠',label:'Overview'},
-  {id:'indicators',icon:'📊',label:'Indicators'},
-  {id:'monetary',icon:'🏦',label:'Monetary Policy'},
-  {id:'inflation',icon:'📉',label:'Inflation'},
-  {id:'markets',icon:'💵',label:'Financial Markets'},
-  {id:'external',icon:'🌎',label:'External Sector'},
-  {id:'money',icon:'💰',label:'Money & Credit'},
-  {id:'labor',icon:'👷',label:'Labor Market'},
-  {id:'cycle',icon:'🔄',label:'Economic Cycle'},
-  {id:'calendar',icon:'📰',label:'Calendar'},
-  {id:'datacenter',icon:'🗃️',label:'Data Center'},
-  {id:'sources',icon:'📎',label:'Sources'},
-  {id:'journal',icon:'📝',label:'My Analysis'},
-];
-const nav = document.getElementById('nav');
-PAGES.forEach((p,i)=>{
-  const el = document.createElement('div');
-  el.className = 'nav-item'+(i===0?' active':'');
-  el.dataset.page = p.id;
-  el.innerHTML = `<span class="nav-emoji">${p.icon}</span>${p.label}`;
-  el.onclick = ()=> showPage(p.id);
-  nav.appendChild(el);
-});
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active', p.dataset.page===id));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.page===id));
-}
-document.querySelector('.page[data-page="overview"]').classList.add('active');
-
-Chart.defaults.color = '#8fa3bf';
-Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
-Chart.defaults.borderColor = '#122236';
-function lineChart(ctx,labels,data,color){
-  return new Chart(ctx,{type:'line',data:{labels,datasets:[{data,borderColor:color,backgroundColor:color+'22',fill:true,tension:.35,pointRadius:0,borderWidth:2}]},
-    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'#122236'}}},animation:{duration:400}}});
-}
-
-/* BI Rate history — real path Sep 2025–Aug 2026, source: Bank Indonesia RDG announcements */
-lineChart(document.getElementById('chart-birate'),
-  ['Sep25','Oct25','Nov25','Dec25','Jan26','Feb26','Mar26','Apr26','May26','Jun26','Jul26','Aug26'],
-  [4.75,4.75,4.75,4.75,4.75,4.75,4.75,4.75,5.25,5.75,5.75,5.75],'#3f8cff');
-
-/* Inflation headline YoY — real values where available (BPS), interpolated for months without a found figure */
-lineChart(document.getElementById('chart-inflation'),
-  ['Feb26','Mar26','Apr26','May26','Jun26','Jul26','Aug26'],
-  [4.76,3.5,3.2,3.08,2.9,2.88,3.19],'#e0ab3f');
-
-/* TPT trend — real Sakernas points only (Feb & May 2026) */
-lineChart(document.getElementById('chart-tpt'), ['Feb 2026','May 2026'], [4.68,4.65], '#22b8a3');
-
-/* Live: USD/IDR via Frankfurter (ECB reference rates) */
-async function loadFX(){
-  try{
-    const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=IDR');
-    const j = await res.json();
-    const rate = j.rates.IDR;
-    const fmt = rate.toLocaleString('en-US',{maximumFractionDigits:0});
-    document.getElementById('ov-usdidr').textContent = fmt;
-    document.getElementById('dc-fx').textContent = fmt;
-  }catch(e){
-    document.getElementById('ov-usdidr').textContent = 'n/a';
-    document.getElementById('ov-usdidr-note').textContent = 'Live fetch gagal — lihat widget TradingView di halaman Financial Markets';
-    document.getElementById('dc-fx').textContent = 'n/a';
-  }
-}
-loadFX();
-
-/* Live: World Bank annual indicators */
-async function loadWorldBank(code, elIds, suffix){
-  try{
-    const res = await fetch(`https://api.worldbank.org/v2/country/IDN/indicator/${code}?format=json&per_page=10`);
-    const j = await res.json();
-    const rows = (j[1]||[]).filter(r=>r.value!==null);
-    if(!rows.length) throw new Error('no data');
-    const latest = rows[0];
-    const val = Number(latest.value).toFixed(2);
-    elIds.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent = val+(suffix||''); });
-  }catch(e){
-    elIds.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent = 'n/a'; });
-  }
-}
-loadWorldBank('NY.GDP.MKTP.KD.ZG', ['ov-gdp'], '%');
-loadWorldBank('SL.UEM.TOTL.ZS', ['lab-unemp'], '%');
-loadWorldBank('BN.CAB.XOKA.GD.ZS', ['ext-ca','dc-ca'], '%');
-
-/* Analysis Journal — persistent storage */
-const JKEY = 'analysis-journal';
-async function loadJournal(){
-  try{
-    const res = await window.storage.get(JKEY);
-    const entries = res ? JSON.parse(res.value) : [];
-    renderJournal(entries);
-  }catch(e){ renderJournal([]); }
-}
-function renderJournal(entries){
-  const list = document.getElementById('journal-list');
-  if(!entries.length){ list.innerHTML = '<p class="foot-note">Belum ada analisis tersimpan. Tulis analisis pertama Anda di atas.</p>'; return; }
-  list.innerHTML = '';
-  entries.slice().reverse().forEach(e=>{
-    const div = document.createElement('div');
-    div.className = 'journal-entry';
-    div.innerHTML = `<div class="je-date">${e.date}</div>
-      <div class="je-title">${e.regime} — ${e.bias}</div>
-      <div class="je-body"><strong>Key Drivers:</strong> ${e.drivers||'-'}\n\n<strong>Thesis:</strong> ${e.thesis||'-'}\n\n<strong>What Changed:</strong> ${e.changed||'-'}\n\n<strong>Result:</strong> ${e.result||'-'}</div>`;
-    list.appendChild(div);
-  });
-}
-document.getElementById('j-save').onclick = async ()=>{
-  const entry = {
-    date: new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}),
-    regime: document.getElementById('j-regime').value,
-    bias: document.getElementById('j-bias').value,
-    drivers: document.getElementById('j-drivers').value,
-    thesis: document.getElementById('j-thesis').value,
-    changed: document.getElementById('j-changed').value,
-    result: document.getElementById('j-result').value,
-  };
-  try{
-    const res = await window.storage.get(JKEY);
-    const entries = res ? JSON.parse(res.value) : [];
-    entries.push(entry);
-    await window.storage.set(JKEY, JSON.stringify(entries));
-    ['j-drivers','j-thesis','j-changed','j-result'].forEach(id=>document.getElementById(id).value='');
-    renderJournal(entries);
-  }catch(e){ alert('Gagal menyimpan. Coba lagi.'); }
-};
-loadJournal();
-</script>
 </body>
 </html>
