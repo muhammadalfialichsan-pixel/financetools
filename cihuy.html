@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Asesmen Aspek Hukum Dalam Ekonomi Syariah - C3ESR</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;min-height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  background:#0b1220;color:#e8f0fa;min-height:100vh;
+  background-image:radial-gradient(circle at 12% 8%,rgba(45,212,167,.20),transparent 42%),
+                   radial-gradient(circle at 88% 92%,rgba(56,189,248,.18),transparent 42%),
+                   radial-gradient(circle at 50% 50%,rgba(99,102,241,.08),transparent 60%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+}
+.screen{display:none}
+.screen.active{display:block}
+/* ---------- LOGIN ---------- */
+.center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.card{
+  background:linear-gradient(160deg,#16283f,#0f1a2b 70%);
+  border:1px solid #24405f;border-radius:20px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.login-card{width:100%;max-width:560px;padding:26px 22px 24px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.logo{
+  width:48px;height:48px;border-radius:14px;flex:0 0 auto;
+  background:linear-gradient(135deg,#2dd4a7,#38bdf8);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:#04121f;font-size:19px;letter-spacing:-.5px;
+  box-shadow:0 8px 22px rgba(45,212,167,.35);
+}
+.brand h1{font-size:17px;margin:0;line-height:1.25;font-weight:800;letter-spacing:.2px}
+.brand p{margin:3px 0 0;font-size:12px;color:#93a7bf}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.chip{
+  font-size:11px;padding:5px 10px;border-radius:999px;
+  background:rgba(45,212,167,.10);border:1px solid rgba(45,212,167,.32);color:#7ff0cd;
+  font-weight:600;letter-spacing:.2px;
+}
+.chip.blue{background:rgba(56,189,248,.10);border-color:rgba(56,189,248,.32);color:#9fd9ff}
+.chip.gold{background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.32);color:#ffd894}
+.divider{height:1px;background:linear-gradient(90deg,transparent,#24405f,transparent);margin:16px 0}
+label.fld{display:block;font-size:12px;font-weight:700;color:#9fb6cf;margin:12px 0 6px;letter-spacing:.3px}
+input.inp{
+  width:100%;padding:13px 14px;border-radius:12px;
+  border:1px solid #2a4a6d;background:#0b1626;color:#e8f0fa;
+  font-size:15px;outline:none;transition:.18s;font-family:inherit;
+}
+input.inp:focus{border-color:#2dd4a7;box-shadow:0 0 0 3px rgba(45,212,167,.16);background:#0d1a2c}
+input.inp::placeholder{color:#4f6a86}
+.err{color:#ff8f8f;font-size:12px;margin-top:6px;min-height:16px;font-weight:600}
+.rules{
+  background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.28);
+  border-radius:12px;padding:12px 14px;margin-top:16px;font-size:12.5px;line-height:1.65;color:#ffd4d4;
+}
+.rules b{color:#ff9b9b}
+.btn{
+  border:0;border-radius:12px;padding:13px 18px;font-size:14.5px;font-weight:800;
+  cursor:pointer;font-family:inherit;transition:.16s;letter-spacing:.2px;
+}
+.btn.primary{background:linear-gradient(135deg,#2dd4a7,#22b98f);color:#04121f;box-shadow:0 10px 26px rgba(45,212,167,.32)}
+.btn.primary:hover{transform:translateY(-1px);box-shadow:0 14px 32px rgba(45,212,167,.42)}
+.btn.primary:active{transform:translateY(0)}
+.btn.ghost{background:rgba(56,189,248,.08);color:#a8d8ff;border:1px solid rgba(56,189,248,.3)}
+.btn.ghost:hover{background:rgba(56,189,248,.16)}
+.btn.danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 10px 26px rgba(239,68,68,.32)}
+.btn.full{width:100%;margin-top:18px}
+/* ---------- EXAM ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 14px;
+  background:rgba(11,18,32,.88);backdrop-filter:blur(14px);
+  border-bottom:1px solid #1e3450;
+}
+.tb-left{display:flex;align-items:center;gap:10px;min-width:0}
+.tb-badge{
+  flex:0 0 auto;background:linear-gradient(135deg,#2dd4a7,#38bdf8);color:#04121f;
+  font-weight:900;font-size:12px;padding:7px 11px;border-radius:10px;letter-spacing:.5px;
+}
+.tb-txt{min-width:0}
+.tb-txt .t1{font-size:12.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-txt .t2{font-size:10.5px;color:#8ba2bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.timerbox{
+  flex:0 0 auto;text-align:right;padding:6px 12px;border-radius:12px;
+  background:rgba(45,212,167,.10);border:1px solid rgba(45,212,167,.3);
+}
+.timerbox .lb{font-size:9.5px;letter-spacing:1.2px;color:#7ff0cd;font-weight:800}
+.timerbox .vl{font-size:20px;font-weight:900;font-variant-numeric:tabular-nums;color:#2dd4a7;line-height:1.1}
+.timerbox.warn{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.4)}
+.timerbox.warn .vl,.timerbox.warn .lb{color:#ffc45c}
+.timerbox.crit{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.45);animation:pulseRed 1s infinite}
+.timerbox.crit .vl,.timerbox.crit .lb{color:#ff8b8b}
+@keyframes pulseRed{0%,100%{opacity:1}50%{opacity:.6}}
+
+.exam-wrap{
+  max-width:1180px;margin:0 auto;padding:14px;
+  display:grid;grid-template-columns:1fr 306px;gap:14px;align-items:start;
+}
+.qcard{padding:18px 18px 16px}
+.qhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.qno{font-size:12.5px;color:#8ba2bb;font-weight:700;letter-spacing:.4px}
+.qno b{color:#2dd4a7;font-size:16px}
+.qbarwrap{flex:1;min-width:80px;height:7px;background:#0b1626;border-radius:99px;overflow:hidden;border:1px solid #1e3450}
+.qbar{height:100%;width:100%;background:linear-gradient(90deg,#2dd4a7,#38bdf8);border-radius:99px;transition:width .3s linear}
+.qbar.hot{background:linear-gradient(90deg,#f59e0b,#ef4444)}
+.qtime{
+  font-size:13px;font-weight:900;font-variant-numeric:tabular-nums;
+  color:#7ff0cd;background:rgba(45,212,167,.10);padding:4px 10px;border-radius:9px;
+  border:1px solid rgba(45,212,167,.28);min-width:52px;text-align:center;
+}
+.qtime.hot{color:#ff9b9b;background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.35)}
+.qtext{font-size:15.5px;line-height:1.72;color:#eef6ff;margin-bottom:16px;font-weight:600}
+.options{display:flex;flex-direction:column;gap:9px}
+.opt{
+  display:flex;gap:11px;align-items:flex-start;
+  padding:13px 14px;border-radius:13px;cursor:pointer;
+  background:#101d30;border:1px solid #223a56;transition:.16s;user-select:none;
+}
+.opt:hover{background:#152640;border-color:#2f547c;transform:translateX(2px)}
+.opt .key{
+  flex:0 0 auto;width:27px;height:27px;border-radius:9px;
+  background:#18293f;border:1px solid #2b4568;color:#8fb2d4;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;font-weight:900;transition:.16s;
+}
+.opt .txt{font-size:14px;line-height:1.6;color:#cfe0f2;padding-top:2px}
+.opt.sel{background:rgba(45,212,167,.11);border-color:#2dd4a7;box-shadow:0 0 0 1px rgba(45,212,167,.28)}
+.opt.sel .key{background:linear-gradient(135deg,#2dd4a7,#22b98f);color:#04121f;border-color:transparent}
+.opt.sel .txt{color:#eafff8;font-weight:600}
+.qnav{display:flex;gap:10px;margin-top:16px}
+.qnav .btn{flex:1}
+/* ---------- NAV PANEL ---------- */
+.navcard{padding:16px 14px}
+.navhead{font-size:12px;font-weight:800;color:#9fb6cf;letter-spacing:.4px;display:flex;justify-content:space-between;margin-bottom:11px}
+.navhead span{color:#2dd4a7;font-variant-numeric:tabular-nums}
+.navgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;max-height:340px;overflow-y:auto;padding-right:2px}
+.navgrid::-webkit-scrollbar{width:6px}
+.navgrid::-webkit-scrollbar-thumb{background:#2a4a6d;border-radius:9px}
+.nbtn{
+  aspect-ratio:1/1;border-radius:9px;border:1px solid #26405f;background:#101d30;color:#7e97b3;
+  font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;transition:.14s;
+  display:flex;align-items:center;justify-content:center;
+}
+.nbtn:hover{border-color:#3b7bb5;color:#bcd9f5}
+.nbtn.done{background:rgba(45,212,167,.16);border-color:#2dd4a7;color:#7ff0cd}
+.nbtn.cur{background:linear-gradient(135deg,#38bdf8,#2dd4a7);border-color:transparent;color:#04121f;box-shadow:0 0 0 2px rgba(56,189,248,.35)}
+.navlegend{display:flex;gap:12px;margin-top:11px;font-size:10.5px;color:#7d93ab;flex-wrap:wrap}
+.navlegend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+/* ---------- TOAST ---------- */
+#toast{
+  position:fixed;left:50%;top:16px;transform:translate(-50%,-140%);
+  z-index:200;max-width:92vw;
+  background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;
+  padding:12px 18px;border-radius:12px;font-size:13px;font-weight:700;
+  box-shadow:0 16px 40px rgba(239,68,68,.45);transition:transform .35s cubic-bezier(.2,1.2,.4,1);
+  text-align:center;line-height:1.5;
+}
+#toast.show{transform:translate(-50%,0)}
+/* ---------- RESULT ---------- */
+.rescard{max-width:640px;width:100%;padding:26px 22px;text-align:center}
+.rescard h2{margin:0 0 4px;font-size:19px;font-weight:900;letter-spacing:.3px}
+.rescard .sub{font-size:12px;color:#8ba2bb;margin-bottom:18px}
+.score-ring{
+  width:150px;height:150px;border-radius:50%;margin:0 auto 18px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  background:conic-gradient(#2dd4a7 var(--p,0%),#1a2c42 0);
+  position:relative;
+}
+.score-ring::after{
+  content:"";position:absolute;inset:11px;border-radius:50%;background:#0f1a2b;
+  border:1px solid #24405f;
+}
+.score-ring .num{position:relative;z-index:2;font-size:44px;font-weight:900;color:#2dd4a7;line-height:1;font-variant-numeric:tabular-nums}
+.score-ring .lab{position:relative;z-index:2;font-size:11px;color:#8ba2bb;letter-spacing:1.6px;margin-top:5px;font-weight:800}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:16px}
+.stat{background:#101d30;border:1px solid #223a56;border-radius:12px;padding:11px 8px}
+.stat .v{font-size:20px;font-weight:900;font-variant-numeric:tabular-nums}
+.stat .k{font-size:10.5px;color:#8ba2bb;letter-spacing:.6px;margin-top:2px;font-weight:700}
+.stat.g .v{color:#2dd4a7}.stat.r .v{color:#ff8b8b}.stat.n .v{color:#8ba2bb}
+.idbox{text-align:left;background:#0d1929;border:1px solid #1e3450;border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.85;color:#b8cde3}
+.idbox b{color:#e8f0fa}
+.violbox{background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.3);color:#ffc9c9;
+  border-radius:11px;padding:10px 13px;font-size:12px;margin-top:12px;text-align:left;line-height:1.6}
+.dlbox{margin-top:16px;font-size:12px;color:#7ff0cd;font-weight:700}
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:900px){
+  .exam-wrap{grid-template-columns:1fr;padding:10px;gap:10px}
+  .navcard{order:2}
+  .navgrid{grid-template-columns:repeat(8,1fr);max-height:180px}
+  .qcard{padding:15px 14px}
+  .qtext{font-size:14.5px;line-height:1.68}
+  .opt .txt{font-size:13.2px}
+  .tb-txt .t1{font-size:11.5px}
+  .tb-txt .t2{display:none}
+  .timerbox .vl{font-size:17px}
+  .topbar{padding:9px 10px}
+  .rescard{padding:20px 15px}
+  .score-ring{width:130px;height:130px}
+  .score-ring .num{font-size:38px}
+}
+@media(max-width:420px){
+  .navgrid{grid-template-columns:repeat(6,1fr)}
+  .qtime{min-width:44px;font-size:12px}
+  .login-card{padding:20px 15px}
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ================= LOGIN ================= -->
+<section id="screen-login" class="screen active">
+  <div class="center">
+    <div class="card login-card">
+      <div class="brand">
+        <div class="logo">AH</div>
+        <div>
+          <h1>Asesmen Aspek Hukum Dalam Ekonomi Syariah</h1>
+          <p>Ujian berbasis komputer &middot; Mode Offline</p>
+        </div>
+      </div>
+
+      <div class="chiprow">
+        <span class="chip">Kelas C3ESR</span>
+        <span class="chip blue">Rabu 14.30 - 16.00</span>
+        <span class="chip gold">Ruang Al-Ghazali 2.1</span>
+        <span class="chip">60 Soal</span>
+        <span class="chip blue">60 Menit</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="font-size:12.5px;color:#9fb6cf;line-height:1.6">
+        Dosen Pengampu:<br>
+        <b style="color:#e8f0fa;font-size:13.5px">Dr. Mahda Reza Kurniawan, M.S.I.</b>
+      </div>
+
+      <label class="fld" for="inNama">NAMA MAHASISWA</label>
+      <input class="inp" id="inNama" type="text" placeholder="Tulis nama lengkap Anda" autocomplete="off" spellcheck="false">
+
+      <label class="fld" for="inNim">NIM (10 DIGIT)</label>
+      <input class="inp" id="inNim" type="tel" inputmode="numeric" maxlength="10" placeholder="Contoh: 2301010001" autocomplete="off">
+
+      <div class="err" id="loginErr"></div>
+
+      <div class="rules">
+        <b>PERHATIAN SEBELUM MEMULAI</b><br>
+        1. Waktu ujian <b>60 menit</b> dan tidak dapat dijeda. Setiap soal memiliki batas waktu <b>60 detik</b>.<br>
+        2. Anda dapat berpindah soal, mundur, dan mengoreksi jawaban kapan saja melalui panel navigasi.<br>
+        3. Berpindah layar/aplikasi <b>terdeteksi otomatis</b>. Perpindahan ke-1 dan ke-2: Anda dikembalikan ke soal terakhir yang dikerjakan. Perpindahan ke-3: ujian <b>berakhir otomatis</b>.<br>
+        4. Hasil ujian akan diunduh otomatis dalam bentuk <b>PDF</b> setelah ujian selesai.<br>
+        5. Jangan menutup atau memuat ulang halaman ini selama ujian berlangsung.
+      </div>
+
+      <button class="btn primary full" id="btnStart">MULAI ASESMEN</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXAM ================= -->
+<section id="screen-exam" class="screen">
+  <header class="topbar">
+    <div class="tb-left">
+      <div class="tb-badge">C3ESR</div>
+      <div class="tb-txt">
+        <div class="t1">Aspek Hukum Dalam Ekonomi Syariah</div>
+        <div class="t2" id="tbStudent">-</div>
+      </div>
+    </div>
+    <div class="timerbox" id="timerBox">
+      <div class="lb">SISA WAKTU</div>
+      <div class="vl" id="totalTimer">60:00</div>
+    </div>
+  </header>
+
+  <main class="exam-wrap">
+    <div class="qcol">
+      <div class="card qcard">
+        <div class="qhead">
+          <div class="qno">SOAL <b id="qNum">1</b> / <span id="qTot">60</span></div>
+          <div class="qbarwrap"><div class="qbar" id="qBar"></div></div>
+          <div class="qtime" id="qTimer">60s</div>
+        </div>
+        <div class="qtext" id="qText"></div>
+        <div class="options" id="options"></div>
+        <div class="qnav">
+          <button class="btn ghost" id="btnPrev">&larr; Sebelumnya</button>
+          <button class="btn ghost" id="btnNext">Selanjutnya &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="navcol">
+      <div class="card navcard">
+        <div class="navhead">NAVIGASI SOAL <span id="progressTxt">0/60</span></div>
+        <div class="navgrid" id="navGrid"></div>
+        <div class="navlegend">
+          <span><i style="background:#2dd4a7"></i>Sudah dijawab</span>
+          <span><i style="background:#38bdf8"></i>Soal aktif</span>
+          <span><i style="background:#26405f"></i>Belum</span>
+        </div>
+        <button class="btn danger full" id="btnFinish">SELESAIKAN ASESMEN</button>
+      </div>
+    </aside>
+  </main>
+</section>
+
+<!-- ================= RESULT ================= -->
+<section id="screen-result" class="screen">
+  <div class="center">
+    <div class="card rescard">
+      <h2>HASIL ASESMEN</h2>
+      <div class="sub">Aspek Hukum Dalam Ekonomi Syariah &middot; Kelas C3ESR</div>
+
+      <div class="score-ring" id="scoreRing" style="--p:0%">
+        <div class="num" id="scoreNum">0</div>
+        <div class="lab">NILAI</div>
+      </div>
+
+      <div class="statgrid">
+        <div class="stat g"><div class="v" id="statBenar">0</div><div class="k">BENAR</div></div>
+        <div class="stat r"><div class="v" id="statSalah">0</div><div class="k">SALAH</div></div>
+        <div class="stat n"><div class="v" id="statKosong">0</div><div class="k">KOSONG</div></div>
+      </div>
+
+      <div class="idbox" id="idBox"></div>
+      <div id="violWrap"></div>
+
+      <div class="dlbox" id="dlInfo">Menyiapkan berkas PDF...</div>
+      <button class="btn primary full" id="btnRedownload" style="display:none">UNDUH ULANG PDF HASIL</button>
+    </div>
+  </div>
+</section>
+
+<script>
+/* =========================================================
+   BANK SOAL
+   ========================================================= */
+var SOAL = [
+/* ---------- TOPIK 1 : KEDUDUKAN HUKUM EKONOMI SYARIAH ---------- */
+{q:"Dalam kerangka sistem hukum nasional Indonesia, keberlakuan hukum ekonomi syariah paling tepat diletakkan pada ranah....",o:["hukum adat yang diangkat menjadi hukum positif melalui putusan pengadilan","hukum asing yang berkedudukan sebagai sumber persuasif","hukum positif yang berkarakter sektoral dan bersifat khusus (lex specialis)","hukum kebiasaan yang daya ikatnya terbatas pada komunitas tertentu"],a:2},
+
+{q:"Teori yang menyatakan bahwa hukum Islam baru berlaku bagi umat Islam apabila telah diresepsi oleh hukum adat adalah....",o:["receptio in complexu","receptie","receptie exit","receptie a contrario"],a:1},
+
+{q:"Sebaliknya, teori yang menyatakan bahwa hukum Islam berlaku bagi umat Islam karena ia sendiri merupakan hukum positif, dan justru hukum adatlah yang tunduk pada hukum Islam, adalah....",o:["receptio in complexu","receptie","receptie exit","receptie a contrario"],a:2},
+
+{q:"Pengaturan pertama yang secara eksplisit memberi landasan operasional bagi bank yang beroperasi berdasarkan prinsip bagi hasil di Indonesia adalah....",o:["UU No. 7 Tahun 1992 tentang Perbankan","PP No. 72 Tahun 1992 tentang Bank Berdasarkan Prinsip Bagi Hasil","UU No. 10 Tahun 1998","UU No. 21 Tahun 2008"],a:1},
+
+{q:"Dalam UU No. 21 Tahun 2008 tentang Perbankan Syariah, prinsip syariah dirumuskan sebagai prinsip hukum Islam dalam kegiatan perbankan berdasarkan fatwa lembaga yang berwenang menetapkan fatwa di bidang syariah. Lembaga yang dimaksud adalah....",o:["Majelis Ulama Indonesia secara kelembagaan","Dewan Pengawas Syariah pada masing-masing bank","Dewan Syariah Nasional Majelis Ulama Indonesia","Otoritas Jasa Keuangan"],a:2},
+
+{q:"Kedudukan Kompilasi Hukum Ekonomi Syariah (KHES) dalam tata hukum Indonesia adalah....",o:["undang-undang yang dibentuk bersama DPR","fatwa yang daya ikatnya bersifat moral","peraturan Otoritas Jasa Keuangan","peraturan Mahkamah Agung yang berfungsi sebagai pedoman hakim"],a:3},
+
+{q:"Fatwa Dewan Syariah Nasional-MUI dalam sistem hukum nasional berkedudukan sebagai....",o:["peraturan perundang-undangan yang mengikat seluruh warga negara","yurisprudensi yang wajib diikuti hakim","sumber hukum yang mengikat setelah diadopsi ke dalam peraturan sektoral","doktrin yang sama sekali tidak memiliki daya ikat"],a:2},
+
+{q:"Asas lex specialis derogat legi generali dalam konteks ekonomi syariah bermakna....",o:["peraturan yang lebih tinggi mengesampingkan peraturan yang lebih rendah","peraturan yang lebih baru mengesampingkan peraturan yang lebih lama","ketentuan umum tetap berlaku meskipun ada pengaturan khusus","ketentuan khusus mengesampingkan ketentuan umum sepanjang keduanya mengatur hal yang sama"],a:3},
+
+{q:"Hubungan antara hukum ekonomi syariah dan hukum perdata umum (KUHPerdata) paling tepat digambarkan sebagai....",o:["hubungan subordinasi, di mana KUHPerdata selalu berada di bawah syariah","hubungan dikotomis, di mana keduanya tidak dapat bertemu","hubungan komplementer, di mana KUHPerdata berlaku sepanjang tidak diatur secara khusus","hubungan adopsi, di mana seluruh KUHPerdata batal demi hukum"],a:2},
+
+{q:"Setelah berlakunya UU No. 21 Tahun 2011, kewenangan pengaturan dan pengawasan sektor perbankan syariah berada pada....",o:["Bank Indonesia, termasuk penetapan fatwa syariahnya","OJK, termasuk penetapan fatwa syariahnya","DSN-MUI, termasuk pengawasan kepatuhan syariahnya","OJK, sementara fatwa keperluan syariah tetap pada DSN-MUI"],a:3},
+
+{q:"Pernyataan yang paling tepat mengenai posisi hukum ekonomi syariah dalam sistem hukum nasional adalah....",o:["hukum ekonomi syariah merupakan hukum agama yang berdiri di luar sistem hukum nasional","hukum ekonomi syariah hanya berlaku sebagai pedoman moral tanpa akibat hukum","hukum ekonomi syariah menjadi bagian dari hukum nasional melalui proses adopsi ke dalam peraturan perundang-undangan","hukum ekonomi syariah sepenuhnya menggantikan hukum perdata umum"],a:2},
+
+{q:"Asas kebinekaan hukum yang dianut sistem hukum nasional dalam kaitannya dengan ekonomi syariah mengandung makna....",o:["hukum agama tidak dapat menjadi bahan pembentukan hukum nasional","setiap golongan wajib tunduk pada satu sistem hukum yang sama","hukum adat lebih tinggi kedudukannya daripada hukum Islam","hukum nasional mengakomodasi hukum agama sebagai salah satu bahan baku pembentukan hukum, termasuk ekonomi syariah"],a:3},
+
+/* ---------- TOPIK 2 : PRINSIP-PRINSIP AKAD ---------- */
+{q:"Menurut KHES, rukun akad terdiri atas....",o:["pihak yang berakad, objek akad, dan sighat","aqid, ma'qud 'alaih, dan mahal","pihak yang berakad, objek akad, tujuan pokok akad, dan kesepakatan","ijab, qabul, dan khiyar"],a:2},
+
+{q:"Yang dimaksud tujuan pokok akad dalam KHES adalah....",o:["motif subjektif para pihak yang mendorong dilakukannya akad","keuntungan ekonomis yang diperoleh salah satu pihak","syarat tambahan yang disepakati para pihak","akibat hukum yang menjadi tujuan para pihak untuk saling mengikatkan diri"],a:3},
+
+{q:"Asas at-taradhin dalam akad bermakna bahwa akad lahir dari....",o:["kesepakatan yang bersifat formalistik semata","kerelaan para pihak, sehingga akad yang lahir karena paksaan tidak sah","kesepakatan yang cukup dibuktikan dengan tulisan","kerelaan salah satu pihak saja"],a:1},
+
+{q:"Perbedaan paling mendasar antara akad dan wa'd (janji) terletak pada....",o:["wa'd menimbulkan akibat hukum yang mengikat, sedangkan akad hanya mengikat secara moral","keduanya sama-sama mengikat secara hukum tanpa perbedaan","akad menimbulkan akibat hukum yang mengikat kedua pihak, sedangkan wa'd pada dasarnya hanya mengikat secara moral","akad selalu bersifat sepihak, sedangkan wa'd selalu bersifat dua pihak"],a:2},
+
+{q:"Dalam KHES, akad yang tidak memenuhi rukun dan syarat sehingga sejak semula tidak pernah melahirkan akibat hukum disebut....",o:["akad fasid","akad mauquf","akad ghairu lazim","akad batal (batil)"],a:3},
+
+{q:"Akad yang telah memenuhi rukun dan syarat, tetapi mengandung unsur yang menjadikannya dapat dibatalkan (voidable), disebut....",o:["akad batal","akad fasid","akad mursal","akad mu'allaq"],a:1},
+
+{q:"Akad yang digantungkan keberlakuannya pada suatu peristiwa yang akan datang disebut....",o:["akad mudhaf","akad mu'allaq","akad faudri","akad mursal"],a:1},
+
+{q:"Berdasarkan sifat mengikatnya, akad wadi'ah termasuk....",o:["akad lazim, yang tidak dapat diakhiri secara sepihak","akad tijarah yang bersifat komersial murni","akad mu'awadhah yang wajib ada imbalan","akad ghairu lazim, yang dapat diakhiri oleh para pihak"],a:3},
+
+{q:"Berikut yang merupakan akad tabarru' adalah....",o:["murabahah dan salam","hibah dan qardh","ijarah dan musyarakah","mudharabah dan istishna'"],a:1},
+
+{q:"Batas kebebasan berkontrak dalam hukum ekonomi syariah adalah....",o:["sepanjang dituangkan dalam akta notaris","sepanjang tidak bertentangan dengan syariah, ketertiban umum, dan kesusilaan","sepanjang tidak merugikan pihak yang lebih kuat secara ekonomi","sepanjang disetujui oleh lembaga pengawas syariah"],a:1},
+
+{q:"Syarat objek akad menurut hukum Islam mencakup....",o:["harus ada, jelas, dan bernilai ekonomis tinggi","harus ada, dapat diserahkan, dan telah dimiliki penjual","harus jelas, halal, dan telah bersertifikat","harus ada, jelas, dapat diserahkan, dan halal"],a:3},
+
+{q:"Ketidakjelasan yang bersifat berat pada objek akad sehingga dapat menimbulkan sengketa disebut....",o:["gharar yasir","gharar fahisy","taghrir","jahalah basithah"],a:1},
+
+{q:"Asas yang menuntut agar akad dilaksanakan sesuai dengan kesepakatan dan tidak boleh diubah secara sepihak disebut....",o:["asas konsensualisme","asas kebebasan berkontrak","asas pacta sunt servanda","asas itikad baik"],a:2},
+
+{q:"Akad yang pelaksanaannya bergantung pada terpenuhinya suatu syarat, di mana syarat tersebut harus dipenuhi oleh pihak yang berutang, merupakan bentuk dari....",o:["akad munjiz","akad mudhaf","akad mursal","akad mu'allaq"],a:3},
+
+/* ---------- TOPIK 3 : HUKUM AKAD JUAL BELI ---------- */
+{q:"Dalam jual beli salam, harga harus diserahkan penuh pada saat akad. Apabila barang yang diserahkan kemudian tidak sesuai dengan spesifikasi yang disepakati, maka....",o:["pembeli hanya berhak menuntut ganti rugi","akad otomatis batal demi hukum","pembeli berhak memilih antara menerima atau membatalkan (khiyar)","penjual berhak menetapkan harga baru secara sepihak"],a:2},
+
+{q:"Pertukaran dua barang ribawi yang sejenis dengan takaran berbeda dan diserahkan secara tunai termasuk....",o:["riba qardh","riba nasi'ah","riba jahiliyah","riba fadhl"],a:3},
+
+{q:"Penundaan penyerahan salah satu barang dalam pertukaran barang ribawi yang sejenis menghasilkan....",o:["riba fadhl","bai' al-wafa","riba nasi'ah","bai' al-'inah"],a:2},
+
+{q:"Akad di mana seseorang menjual barang secara kredit dengan harga lebih tinggi, kemudian membelinya kembali secara tunai dengan harga lebih rendah dari pihak yang sama, dikenal sebagai....",o:["bai' al-wafa","bai' al-tawarruq","bai' al-muzabanah","bai' al-'inah"],a:3},
+
+{q:"Hak pembeli untuk membatalkan akad karena adanya cacat pada barang disebut khiyar....",o:["majlis","syarat","'aibi","ru'yah"],a:2},
+
+{q:"Hak khiyar yang berlangsung selama para pihak masih berada dalam majelis akad disebut khiyar....",o:["majlis","syarat","ta'yin","'aibi"],a:0},
+
+{q:"Jual beli yang dilakukan dengan cara melempar batu atau menyentuh barang tanpa melihat barangnya (bai' al-hashah / mulamasah) hukumnya....",o:["sah karena ada kerelaan","mubah karena merupakan kebiasaan","sah tetapi makruh","fasid karena mengandung gharar berat"],a:3},
+
+{q:"Jual beli barang yang belum dimiliki penjual (bai' al-ma'dum) pada dasarnya....",o:["sah karena akan diserahkan kemudian","sah apabila ada jaminan","tidak sah, kecuali dalam bentuk akad salam dan istishna'","sah apabila disetujui pembeli"],a:2},
+
+{q:"Akad istishna' berbeda dengan akad salam terutama pada....",o:["objeknya berupa barang yang harus dibuat (dipesan) menurut spesifikasi tertentu","harga harus dibayar penuh di muka","barang telah ada pada saat akad","tidak boleh ada khiyar"],a:0},
+
+{q:"Dalam jual beli, khiyar syarat yang tidak dibatasi waktunya menurut mayoritas fuqaha....",o:["sah tanpa batas","sah apabila disepakati tertulis","tidak sah karena menimbulkan gharar pada masa depan akad","sah tetapi hanya berlaku satu hari"],a:2},
+
+{q:"Menurut Fatwa DSN-MUI, jual beli 'inah hukumnya....",o:["mubah karena termasuk kebebasan berkontrak","makruh tetapi sah","dilarang karena mengandung rekayasa untuk menghindari riba","sah apabila ada kebutuhan mendesak"],a:2},
+
+{q:"Penjualan barang yang masih dalam proses panen dengan cara menukar hasil panen yang belum jelas jumlahnya (muzabanah) hukumnya....",o:["sah karena objeknya jelas di kemudian hari","sah apabila disaksikan saksi","sah tetapi harus dengan jaminan","tidak sah karena mengandung gharar"],a:3},
+
+/* ---------- TOPIK 4 : PASAR MODAL SYARIAH ---------- */
+{q:"Pengaturan prinsip syariah di bidang pasar modal secara umum pertama kali dituangkan dalam....",o:["UU No. 8 Tahun 1995","Fatwa DSN-MUI No. 40/DSN-MUI/X/2003","Fatwa DSN-MUI No. 20/DSN-MUI/IV/2001","UU No. 19 Tahun 2008"],a:1},
+
+{q:"Kriteria pemilihan efek syariah (screening) menetapkan bahwa emiten tidak boleh melakukan kegiatan usaha yang bertentangan dengan prinsip syariah. Selain itu, rasio total utang berbasis bunga terhadap total aset tidak boleh melebihi....",o:["30%","49%","45%","50%"],a:2},
+
+{q:"Rasio pendapatan non-halal terhadap total pendapatan usaha emiten dalam kriteria efek syariah tidak boleh melebihi....",o:["5%","15%","20%","10%"],a:3},
+
+{q:"Perbedaan pokok antara sukuk dan obligasi konvensional terletak pada....",o:["sukuk berbasis pada hubungan utang-piutang berbunga, sedangkan obligasi berbasis aset","sukuk tidak memiliki risiko, sedangkan obligasi memiliki risiko","sukuk berbasis pada kepemilikan aset atau hak manfaat, sedangkan obligasi berbasis utang-piutang","sukuk diterbitkan negara, sedangkan obligasi diterbitkan korporasi"],a:2},
+
+{q:"Surat Berharga Syariah Negara (SBSN) diatur dalam....",o:["UU No. 19 Tahun 2008","UU No. 41 Tahun 2004","UU No. 21 Tahun 2008","UU No. 8 Tahun 1995"],a:0},
+
+{q:"Fungsi Dewan Pengawas Syariah pada perusahaan efek yang menerbitkan reksa dana syariah adalah....",o:["menetapkan fatwa atas produk reksa dana","mengawasi kepatuhan prinsip syariah atas pengelolaan reksa dana","melakukan audit laporan keuangan","menetapkan harga unit penyertaan"],a:1},
+
+{q:"Transaksi yang dilarang dalam pasar modal syariah karena mengandung unsur ketidakpastian dan spekulasi berlebihan adalah....",o:["transaksi jual beli saham pada pasar reguler","transaksi sukuk di pasar sekunder","transaksi reksa dana syariah","transaksi short selling dan margin trading"],a:3},
+
+{q:"Indeks saham yang pada awalnya dibentuk untuk menjadi acuan bagi investor syariah di Indonesia adalah....",o:["ISSI","IDX30","JII","LQ45"],a:2},
+
+{q:"Reksa dana syariah wajib memiliki....",o:["dewan pengawas syariah dan akad yang sesuai prinsip syariah","jaminan dari bank kustodian","izin dari DSN-MUI sebagai lembaga pengawas","laporan keuangan harian"],a:0},
+
+{q:"Asas yang menekankan bahwa kegiatan pasar modal syariah harus bebas dari riba, gharar, maysir, dan zhulm disebut asas....",o:["keterbukaan","profesionalitas","kepatuhan syariah","efisiensi"],a:2},
+
+{q:"Dalam penerbitan efek syariah berupa saham, dividen yang diterima investor....",o:["otomatis haram seluruhnya","boleh diterima sepanjang berasal dari pendapatan yang halal","wajib dizakati sebelum diterima","harus disumbangkan seluruhnya"],a:1},
+
+{q:"Pernyataan yang paling tepat mengenai kedudukan DSN-MUI dalam pasar modal syariah adalah....",o:["DSN-MUI berwenang memberi izin penerbitan efek syariah","DSN-MUI berwenang melakukan pengawasan harian atas transaksi","DSN-MUI berwenang menetapkan harga efek syariah","DSN-MUI berwenang menetapkan fatwa yang menjadi dasar penerapan prinsip syariah di pasar modal"],a:3},
+
+/* ---------- TOPIK 5 : LEMBAGA KEUANGAN SOSIAL ISLAM ---------- */
+{q:"Jumlah asnaf yang berhak menerima zakat menurut Al-Qur'an adalah....",o:["6","7","8","9"],a:2},
+
+{q:"Nishab zakat emas adalah....",o:["20 mitsqal atau setara 100 gram emas","20 dinar atau setara 85 gram emas","85 gram perak","100 gram emas"],a:1},
+
+{q:"Kadar zakat perdagangan (zakat tijarah) adalah....",o:["5%","10%","2,5%","20%"],a:2},
+
+{q:"Lembaga yang berwenang mengelola zakat secara nasional berdasarkan UU No. 23 Tahun 2011 adalah....",o:["LAZ","Baitul Mal","BAZNAS","Kementerian Agama"],a:2},
+
+{q:"Pengelolaan wakaf diatur dalam....",o:["UU No. 38 Tahun 1999","UU No. 41 Tahun 2004","UU No. 23 Tahun 2011","UU No. 19 Tahun 2008"],a:1},
+
+{q:"Pihak yang menerima harta wakaf untuk dikelola dan dikembangkan sesuai peruntukannya disebut....",o:["wakif","mauquf 'alaih","mutawalli","nazhir"],a:3},
+
+{q:"Wakaf uang menurut fatwa DSN-MUI dan UU No. 41 Tahun 2004 harus....",o:["disimpan dalam bentuk deposito berjangka","dibagikan seluruhnya kepada penerima manfaat","dikelola secara produktif dan pokoknya tidak boleh berkurang","digunakan untuk membeli tanah"],a:2},
+
+{q:"Perbedaan pokok antara zakat dan infaq/sedekah terletak pada....",o:["zakat bersifat wajib dengan syarat dan kadar tertentu, sedangkan infaq/sedekah bersifat sukarela","zakat diberikan kepada individu, sedangkan sedekah kepada lembaga","zakat hanya untuk fakir miskin, sedangkan sedekah untuk semua orang","zakat dapat diberikan kepada siapa saja, sedangkan sedekah terbatas pada asnaf"],a:0},
+
+{q:"Zakat yang dikeluarkan atas harta yang diperdagangkan dan telah mencapai nishab serta haul disebut....",o:["zakat fitrah","zakat rikaz","zakat ma'din","zakat tijarah"],a:3},
+
+{q:"Dalam UU Pajak Penghasilan, zakat yang dibayarkan melalui badan atau lembaga amil zakat yang dibentuk atau disahkan pemerintah....",o:["tidak dapat dikurangkan dari penghasilan bruto","dapat dikurangkan dari penghasilan neto","hanya dapat dikreditkan terhadap PPh terutang","dapat dikurangkan dari penghasilan bruto"],a:3}
+];
+
+/* =========================================================
+   KONFIGURASI
+   ========================================================= */
+var TOTAL_Q      = SOAL.length;
+var TOTAL_TIME   = 3600;   /* 60 menit */
+var PER_Q_TIME   = 60;     /* 60 detik per soal */
+
+/* =========================================================
+   STATE
+   ========================================================= */
+var answers      = new Array(TOTAL_Q);
+for (var i = 0; i < TOTAL_Q; i++) answers[i] = -1;
+
+var current      = 0;
+var totalEnd     = 0;
+var qEnd         = 0;
+var qFrozen      = false;
+var ticker       = null;
+var examActive   = false;
+var finished     = false;
+var switchCount  = 0;
+var autoPending  = false;
+var studentNama  = "";
+var studentNim   = "";
+var startStamp   = null;
+var endStamp     = null;
+var lastPdfText  = "";
+
+/* =========================================================
+   UTIL
+   ========================================================= */
+function $(id){ return document.getElementById(id); }
+
+function pad2(n){ return (n < 10 ? "0" : "") + n; }
+
+function fmtTime(sec){
+  if (sec < 0) sec = 0;
+  var m = Math.floor(sec / 60);
+  var s = sec % 60;
+  return pad2(m) + ":" + pad2(s);
+}
+
+function showScreen(id){
+  var all = document.querySelectorAll(".screen");
+  for (var i = 0; i < all.length; i++) all[i].classList.remove("active");
+  $(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+
+function showToast(msg, ms){
+  var t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._t);
+  t._t = setTimeout(function(){ t.classList.remove("show"); }, ms || 4000);
+}
+
+/* =========================================================
+   MULAI UJIAN
+   ========================================================= */
+$("btnStart").addEventListener("click", function(){
+  var nama = $("inNama").value.trim();
+  var nim  = $("inNim").value.trim();
+  var err  = $("loginErr");
+
+  if (nama.length < 3){
+    err.textContent = "Nama mahasiswa wajib diisi (minimal 3 karakter).";
+    $("inNama").focus();
+    return;
+  }
+  if (!/^[0-9]{10}$/.test(nim)){
+    err.textContent = "NIM wajib diisi tepat 10 digit angka.";
+    $("inNim").focus();
+    return;
+  }
+  err.textContent = "";
+  studentNama = nama;
+  studentNim  = nim;
+
+  startExam();
+});
+
+$("inNim").addEventListener("input", function(){
+  this.value = this.value.replace(/[^0-9]/g, "").slice(0, 10);
+});
+
+function startExam(){
+  examActive   = true;
+  finished     = false;
+  switchCount  = 0;
+  autoPending  = false;
+  startStamp   = new Date();
+  totalEnd     = Date.now() + TOTAL_TIME * 1000;
+
+  $("tbStudent").textContent = studentNama + "  \u00B7  " + studentNim;
+  $("qTot").textContent = TOTAL_Q;
+
+  buildNav();
+  goTo(0);
+  showScreen("screen-exam");
+
+  if (ticker) clearInterval(ticker);
+  ticker = setInterval(tick, 250);
+  tick();
+}
+
+/* =========================================================
+   NAVIGASI SOAL
+   ========================================================= */
+function buildNav(){
+  var grid = $("navGrid");
+  grid.innerHTML = "";
+  for (var i = 0; i < TOTAL_Q; i++){
+    (function(idx){
+      var b = document.createElement("button");
+      b.className = "nbtn";
+      b.textContent = (idx + 1);
+      b.setAttribute("data-i", idx);
+      b.addEventListener("click", function(){ goTo(idx); });
+      grid.appendChild(b);
+    })(i);
+  }
+}
+
+function updateNav(){
+  var nodes = $("navGrid").children;
+  var done = 0;
+  for (var i = 0; i < TOTAL_Q; i++){
+    var cls = "nbtn";
+    if (answers[i] !== -1) { cls += " done"; done++; }
+    if (i === current) cls += " cur";
+    nodes[i].className = cls;
+  }
+  $("progressTxt").textContent = done + "/" + TOTAL_Q;
+}
+
+function goTo(i){
+  if (finished) return;
+  if (i < 0) i = 0;
+  if (i > TOTAL_Q - 1) i = TOTAL_Q - 1;
+  current = i;
+  qEnd = Date.now() + PER_Q_TIME * 1000;
+  qFrozen = false;
+  renderQuestion();
+}
+
+/* =========================================================
+   RENDER SOAL
+   ========================================================= */
+function renderQuestion(){
+  var s = SOAL[current];
+  $("qNum").textContent = (current + 1);
+  $("qText").textContent = s.q;
+
+  var wrap = $("options");
+  wrap.innerHTML = "";
+  var keys = ["A","B","C","D","E"];
+
+  for (var i = 0; i < s.o.length; i++){
+    (function(idx){
+      var div = document.createElement("div");
+      div.className = "opt" + (answers[current] === idx ? " sel" : "");
+
+      var k = document.createElement("div");
+      k.className = "key";
+      k.textContent = keys[idx];
+
+      var t = document.createElement("div");
+      t.className = "txt";
+      t.textContent = s.o[idx];
+
+      div.appendChild(k);
+      div.appendChild(t);
+
+      div.addEventListener("click", function(){
+        if (finished) return;
+        answers[current] = idx;
+        renderQuestion();
+      });
+
+      wrap.appendChild(div);
+    })(i);
+  }
+
+  $("btnPrev").style.opacity = (current === 0) ? ".45" : "1";
+  $("btnNext").style.opacity = (current === TOTAL_Q - 1) ? ".45" : "1";
+
+  updateNav();
+}
+
+$("btnPrev").addEventListener("click", function(){
+  if (current > 0) goTo(current - 1);
+});
+$("btnNext").addEventListener("click", function(){
+  if (current < TOTAL_Q - 1) goTo(current + 1);
+});
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+function tick(){
+  if (!examActive || finished) return;
+  var now = Date.now();
+
+  /* --- total --- */
+  var tl = Math.round((totalEnd - now) / 1000);
+  if (tl < 0) tl = 0;
+  $("totalTimer").textContent = fmtTime(tl);
+
+  var tb = $("timerBox");
+  tb.className = "timerbox";
+  if (tl <= 60) tb.className = "timerbox crit";
+  else if (tl <= 300) tb.className = "timerbox warn";
+
+  if (tl <= 0){ finishExam(false, "Waktu ujian telah habis."); return; }
+
+  /* --- per soal --- */
+  if (!qFrozen){
+    var ql = Math.round((qEnd - now) / 1000);
+    if (ql < 0) ql = 0;
+
+    var bar = $("qBar");
+    var pct = (ql / PER_Q_TIME) * 100;
+    if (pct < 0) pct = 0;
+    if (pct > 100) pct = 100;
+    bar.style.width = pct + "%";
+
+    var qt = $("qTimer");
+    qt.textContent = ql + "s";
+
+    if (ql <= 15){
+      bar.classList.add("hot");
+      qt.classList.add("hot");
+    } else {
+      bar.classList.remove("hot");
+      qt.classList.remove("hot");
+    }
+
+    if (ql <= 0){
+      /* waktu soal habis -> lanjut ke soal berikutnya */
+      if (current < TOTAL_Q - 1){
+        showToast("Waktu soal " + (current + 1) + " habis. Berlanjut ke soal berikutnya.", 2200);
+        goTo(current + 1);
+      } else {
+        qFrozen = true;
+        qt.textContent = "0s";
+        bar.style.width = "0%";
+      }
+    }
+  }
+}
+
+/* =========================================================
+   ANTI-CHEAT : DETEKSI PERPINDAHAN LAYAR
+   ========================================================= */
+document.addEventListener("visibilitychange", function(){
+  if (!examActive || finished) return;
+
+  if (document.hidden){
+    switchCount++;
+
+    if (switchCount >= 3){
+      autoPending = true;
+      showToast("PERINGATAN: Perpindahan layar ke-3 terdeteksi. Ujian akan diakhiri otomatis.", 3500);
+    } else {
+      showToast("PERINGATAN: Perpindahan layar terdeteksi (" + switchCount + "/3). Anda akan dikembalikan ke soal terakhir yang dikerjakan.", 3500);
+    }
+  } else {
+    if (autoPending){
+      autoPending = false;
+      finishExam(true, "Ujian diakhiri otomatis karena terdeteksi 3 kali perpindahan layar.");
+      return;
+    }
+    if (switchCount > 0){
+      jumpToLastAnswered();
+    }
+  }
+});
+
+function jumpToLastAnswered(){
+  if (finished) return;
+  var target = -1;
+  for (var i = TOTAL_Q - 1; i >= 0; i--){
+    if (answers[i] !== -1){ target = i; break; }
+  }
+  if (target === -1) target = 0;
+  goTo(target);
+  showToast("Anda dikembalikan ke soal nomor " + (target + 1) + " (soal terakhir yang dikerjakan).", 3200);
+}
+
+/* =========================================================
+   KEYBOARD SHORTCUT
+   ========================================================= */
+document.addEventListener("keydown", function(e){
+  if (!examActive || finished) return;
+  var k = e.key.toUpperCase();
+  var map = { "A":0, "B":1, "C":2, "D":3, "1":0, "2":1, "3":2, "4":3 };
+  if (map.hasOwnProperty(k)){
+    if (map[k] < SOAL[current].o.length){
+      answers[current] = map[k];
+      renderQuestion();
+    }
+  } else if (e.key === "ArrowRight"){ if (current < TOTAL_Q - 1) goTo(current + 1); }
+  else if (e.key === "ArrowLeft"){ if (current > 0) goTo(current - 1); }
+});
+
+/* =========================================================
+   SELESAIKAN
+   ========================================================= */
+$("btnFinish").addEventListener("click", function(){
+  if (finished) return;
+  var kosong = 0;
+  for (var i = 0; i < TOTAL_Q; i++) if (answers[i] === -1) kosong++;
+
+  var msg = "Selesaikan asesmen sekarang?";
+  if (kosong > 0) msg = "Masih ada " + kosong + " soal yang belum dijawab.\n\nSelesaikan asesmen sekarang?";
+  if (window.confirm(msg)) finishExam(false, "Ujian diselesaikan oleh mahasiswa.");
+});
+
+function finishExam(isAuto, reason){
+  if (finished) return;
+  finished   = true;
+  examActive = false;
+  endStamp   = new Date();
+  if (ticker) clearInterval(ticker);
+
+  var benar = 0, salah = 0, kosong = 0;
+  for (var i = 0; i < TOTAL_Q; i++){
+    if (answers[i] === -1) kosong++;
+    else if (answers[i] === SOAL[i].a) benar++;
+    else salah++;
+  }
+  var nilai = Math.round((benar / TOTAL_Q) * 100);
+
+  /* --- tampilkan layar hasil --- */
+  $("scoreRing").style.setProperty("--p", nilai + "%");
+  $("scoreNum").textContent = nilai;
+  $("statBenar").textContent  = benar;
+  $("statSalah").textContent  = salah;
+  $("statKosong").textContent = kosong;
+
+  var durasi = Math.round((endStamp.getTime() - startStamp.getTime()) / 1000);
+  var status = nilai >= 60 ? "LULUS" : "TIDAK LULUS";
+
+  $("idBox").innerHTML =
+    "Nama Mahasiswa &nbsp;: <b>" + escapeHtml(studentNama) + "</b><br>" +
+    "NIM &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <b>" + escapeHtml(studentNim) + "</b><br>" +
+    "Mata Kuliah &nbsp;&nbsp;&nbsp;&nbsp;: <b>Aspek Hukum Dalam Ekonomi</b><br>" +
+    "Kelas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <b>C3ESR</b><br>" +
+    "Hari / Jam &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <b>Rabu, 14.30 - 16.00</b><br>" +
+    "Ruang &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <b>Al-Ghazali 2.1</b><br>" +
+    "Dosen &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <b>Dr. Mahda Reza Kurniawan, M.S.I.</b><br>" +
+    "Durasi Pengerjaan : <b>" + fmtTime(durasi) + "</b><br>" +
+    "Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <b style='color:" + (nilai >= 60 ? "#2dd4a7" : "#ff8b8b") + "'>" + status + "</b>";
+
+  if (switchCount > 0 || isAuto){
+    $("violWrap").innerHTML =
+      "<div class='violbox'><b>Catatan Pengawasan:</b> terdeteksi <b>" + switchCount +
+      " kali</b> perpindahan layar selama ujian berlangsung." +
+      (isAuto ? " Ujian diakhiri secara otomatis sesuai ketentuan." : "") + "</div>";
+  } else {
+    $("violWrap").innerHTML = "";
+  }
+
+  showScreen("screen-result");
+
+  /* --- bangun PDF & unduh otomatis --- */
+  lastPdfText = buildResultPDF(benar, salah, kosong, nilai, status, durasi, switchCount, reason);
+
+  setTimeout(function(){
+    var ok = triggerDownload(lastPdfText, "Hasil_Asesmen_" + studentNim + "_" + safeFile(studentNama) + ".pdf");
+    $("dlInfo").textContent = ok
+      ? "Berkas PDF hasil asesmen telah diunduh secara otomatis."
+      : "Unduhan otomatis diblokir peramban. Klik tombol di bawah untuk mengunduh.";
+    $("btnRedownload").style.display = "block";
+  }, 650);
+}
+
+$("btnRedownload").addEventListener("click", function(){
+  if (lastPdfText) triggerDownload(lastPdfText, "Hasil_Asesmen_" + studentNim + "_" + safeFile(studentNama) + ".pdf");
+});
+
+function escapeHtml(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function safeFile(s){
+  return String(s).replace(/[^A-Za-z0-9]/g, "_").substring(0, 28);
+}
+
+/* =========================================================
+   PEMBUAT PDF SEDERHANA (TANPA LIBRARY / CDN)
+   ========================================================= */
+function toAscii(s){
+  var map = {
+    "\u2013":"-","\u2014":"-","\u2018":"'","\u2019":"'","\u201C":'"',"\u201D":'"',
+    "\u2026":"...","\u00A0":" ","\u00B7":"-","\u2022":"-"
+  };
+  return String(s).replace(/[^\x20-\x7E\n]/g, function(c){
+    return map.hasOwnProperty(c) ? map[c] : "?";
+  });
+}
+
+function pdfEsc(s){
+  return String(s).replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)").replace(/\r?\n/g," ");
+}
+
+function buildResultPDF(benar, salah, kosong, nilai, status, durasi, pelanggaran, reason){
+  var items = [];
+
+  function L(t, s, b){ items.push({ t: t, s: s || 11, b: !!b }); }
+  function GAP(h){ items.push({ t: "", s: h || 10 }); }
+
+  L("HASIL ASESMEN MATA KULIAH", 16, true);
+  L("ASPEK HUKUM DALAM EKONOMI SYARIAH", 13, true);
+  L("Kelas C3ESR  |  Rabu 14.30 - 16.00  |  Ruang Al-Ghazali 2.1", 10);
+  GAP(8);
+
+  L("IDENTITAS MAHASISWA", 11, true);
+  L("Nama Mahasiswa       : " + studentNama, 11);
+  L("NIM                  : " + studentNim, 11);
+  L("Mata Kuliah          : Aspek Hukum Dalam Ekonomi", 11);
+  L("Kelas                : C3ESR", 11);
+  L("Dosen Pengampu       : Dr. Mahda Reza Kurniawan, M.S.I.", 11);
+  GAP(8);
+
+  L("WAKTU PELAKSANAAN", 11, true);
+  L("Mulai                : " + formatTanggal(startStamp), 11);
+  L("Selesai              : " + formatTanggal(endStamp), 11);
+  L("Durasi Pengerjaan    : " + fmtTime(durasi), 11);
+  GAP(8);
+
+  L("REKAPITULASI HASIL", 11, true);
+  L("Jumlah Soal          : " + TOTAL_Q, 11);
+  L("Jawaban Benar        : " + benar, 11);
+  L("Jawaban Salah        : " + salah, 11);
+  L("Tidak Dijawab        : " + kosong, 11);
+  L("NILAI AKHIR          : " + nilai + "  (skala 0 - 100)", 13, true);
+  L("STATUS               : " + status, 12, true);
+  GAP(8);
+
+  L("CATATAN PENGAWASAN", 11, true);
+  L("Perpindahan layar    : " + pelanggaran + " kali terdeteksi", 11);
+  L("Keterangan           : " + (reason || "-"), 11);
+  GAP(10);
+
+  L("RINCIAN JAWABAN", 11, true);
+  L("No   Jawaban   Kunci   Status", 10, true);
+  L("--------------------------------------------------------", 10);
+
+  for (var i = 0; i < TOTAL_Q; i++){
+    var keys = ["A","B","C","D","E"];
+    var jw = answers[i] === -1 ? "-" : keys[answers[i]];
+    var kc = keys[SOAL[i].a];
+    var st = answers[i] === -1 ? "KOSONG" : (answers[i] === SOAL[i].a ? "BENAR" : "SALAH");
+    var no = (i + 1 < 10 ? "0" : "") + (i + 1);
+    L(no + "     " + padRight(jw, 9) + padRight(kc, 7) + st, 10);
+  }
+
+  GAP(10);
+  L("Dokumen ini dihasilkan otomatis oleh sistem asesmen.", 9);
+  L("Dosen Pengampu: Dr. Mahda Reza Kurniawan, M.S.I.", 9);
+
+  return makePDF(items);
+}
+
+function padRight(s, n){
+  s = String(s);
+  while (s.length < n) s += " ";
+  return s;
+}
+
+function formatTanggal(d){
+  if (!d) d = new Date();
+  var hari = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  var bulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  return hari[d.getDay()] + ", " + d.getDate() + " " + bulan[d.getMonth()] + " " + d.getFullYear() +
+         " pukul " + pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds());
+}
+
+function makePDF(items){
+  var PW = 595.28, PH = 841.89, MARGIN_L = 48, MARGIN_R = 48, MARGIN_T = 58, MARGIN_B = 58;
+  var maxW = PW - MARGIN_L - MARGIN_R;
+
+  var pages = [], cur = [], y = PH - MARGIN_T;
+
+  function newPage(){
+    if (cur.length) pages.push(cur);
+    cur = [];
+    y = PH - MARGIN_T;
+  }
+
+  function wrapText(text, size){
+    var maxChars = Math.max(12, Math.floor(maxW / (size * 0.5)));
+    var words = String(text).split(" ");
+    var out = [], line = "";
+    for (var i = 0; i < words.length; i++){
+      var w = words[i];
+      if (line !== "" && (line.length + 1 + w.length) > maxChars){
+        out.push(line);
+        line = w;
+      } else {
+        line = (line === "") ? w : line + " " + w;
+      }
+    }
+    if (line !== "") out.push(line);
+    if (!out.length) out.push("");
+    return out;
+  }
+
+  for (var i = 0; i < items.length; i++){
+    var it = items[i];
+    var size = it.s || 11;
+    var lh = size * 1.46;
+
+    if (!it.t){
+      if (y - lh < MARGIN_B) newPage();
+      y -= lh;
+      continue;
+    }
+
+    var lines = wrapText(toAscii(it.t), size);
+    for (var j = 0; j < lines.length; j++){
+      if (y - lh < MARGIN_B) newPage();
+      y -= lh;
+      var font = it.b ? "F2" : "F1";
+      cur.push("BT /" + font + " " + size + " Tf 1 0 0 1 " + MARGIN_L + " " +
+               y.toFixed(2) + " Tm (" + pdfEsc(lines[j]) + ") Tj ET");
+    }
+  }
+  if (cur.length) pages.push(cur);
+  if (!pages.length) pages.push([""]);
+
+  /* ---- susun objek PDF ---- */
+  var objs = [];
+  objs[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+
+  var kids = [];
+  for (var k = 0; k < pages.length; k++) kids.push((5 + 2 * k) + " 0 R");
+  objs[2] = "<< /Type /Pages /Kids [" + kids.join(" ") + "] /Count " + pages.length + " >>";
+  objs[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+  objs[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+
+  for (var p = 0; p < pages.length; p++){
+    var pageObjNum = 5 + 2 * p;
+    var contentObjNum = 6 + 2 * p;
+    objs[pageObjNum] =
+      "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] " +
+      "/Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> " +
+      "/Contents " + contentObjNum + " 0 R >>";
+
+    var stream = pages[p].join("\n");
+    objs[contentObjNum] = "<< /Length " + stream.length + " >>\nstream\n" + stream + "\nendstream";
+  }
+
+  /* ---- serialisasi ---- */
+  var out = "%PDF-1.4\n";
+  var offsets = [];
+
+  for (var o = 1; o < objs.length; o++){
+    if (typeof objs[o] === "undefined"){ objs[o] = "<< >>"; }
+    offsets[o] = out.length;
+    out += o + " 0 obj\n" + objs[o] + "\nendobj\n";
+  }
+
+  var xrefPos = out.length;
+  var n = objs.length;
+
+  out += "xref\n0 " + n + "\n";
+  out += "0000000000 65535 f \n";
+  for (var x = 1; x < n; x++){
+    out += ("0000000000" + offsets[x]).slice(-10) + " 00000 n \n";
+  }
+  out += "trailer\n<< /Size " + n + " /Root 1 0 R >>\nstartxref\n" + xrefPos + "\n%%EOF";
+
+  return out;
+}
+
+function triggerDownload(pdfText, filename){
+  try{
+    var bytes = new Uint8Array(pdfText.length);
+    for (var i = 0; i < pdfText.length; i++){
+      bytes[i] = pdfText.charCodeAt(i) & 0xFF;
+    }
+
+    var blob = new Blob([bytes], { type: "application/pdf" });
+
+    if (window.navigator && window.navigator.msSaveOrOpenBlob){
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+      return true;
+    }
+
+    var url = (window.URL || window.webkitURL).createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.rel = "noopener";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(function(){
+      try{
+        document.body.removeChild(a);
+        (window.URL || window.webkitURL).revokeObjectURL(url);
+      }catch(e){}
+    }, 4000);
+
+    return true;
+  }catch(err){
+    return false;
+  }
+}
+
+/* =========================================================
+   CEGAH KELUAR TANPA SENGAJA
+   ========================================================= */
+window.addEventListener("beforeunload", function(e){
+  if (examActive && !finished){
+    e.preventDefault();
+    e.returnValue = "";
+    return "";
+  }
+});
+
+/* =========================================================
+   INISIALISASI
+   ========================================================= */
+$("qTot").textContent = TOTAL_Q;
+$("inNama").focus();
+</script>
+</body>
+</html>
